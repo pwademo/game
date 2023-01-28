@@ -45,17 +45,20 @@
     </div>
 
     <div id="containerthisjar">
-    </div>
+        Dette glas har du gættet er:<br/>
+    </div>Andre glas har du gættet er:<br/>
     <div id="containerotherjars">
     </div>
     <script>
         const smells=["Hindbær","Lime","Timian","Eddike","Karry","Muscat"];
-        const params = new URLSearchParams(window.location.hash.substr(1));
+        const params = new URLSearchParams(window.location.search.substr(1));
+
+
         const id=params.get("id");
         const container=document.getElementById("container");
 
         if(id){
-           // container.innerHTML=`Nummer: ${id}`;           
+            container.innerHTML=`Glas: ${id}`;           
         }
 
         const fragment = document.createDocumentFragment();
@@ -65,7 +68,11 @@
             div=document.createElement("DIV");
             div.innerHTML=element;
             div.addEventListener("click", ()=>{      
-                container.innerHTML=`For dette glas har du valgt: ${element}`;  
+                //container.innerHTML=`For dette glas har du valgt: ${element}`; 
+                containerthisjar.innerHTML="Dette glas har du gættet er : <br/>";
+                div=document.createElement("DIV");
+                div.innerHTML=`${id} ${element}`;
+                containerthisjar.appendChild(div);
 
                 localStorage.setItem(id,element)
             });
@@ -88,7 +95,7 @@
             if(key==id){
                 console.log("Is id",key);
                 div=document.createElement("DIV");
-                div.innerHTML=value;
+                div.innerHTML=`${key} ${value}`;
                 containerthisjar.appendChild(div);
 
             }
@@ -96,7 +103,7 @@
                 
                 console.log("Is id",key);
                 div=document.createElement("DIV");
-                div.innerHTML=value;
+                div.innerHTML=`${key} ${value}`;
                 containerotherjars.appendChild(div);
             
             
