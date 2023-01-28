@@ -1,0 +1,56 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body { font-family:Arial , sans-serif;}
+        #container {
+            font-size:72px;
+            font-weight: bold;
+        }       
+         #container2 {
+            font-size:xx-large;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Game</h1>
+    <div id="container"></div>
+
+
+
+    <ul id="container2">
+    </ul>
+
+
+    <script>
+        const smells=["Hindbær","Lime","Timian","Eddike","Karry","Muscat"];
+        const params = new URLSearchParams(window.location.hash.substr(1));
+        const id=params.get("id");
+        const container=document.getElementById("container");
+
+        if(id){
+            container.innerHTML=`Nummer: ${id}`;           
+        }
+
+        const fragment = document.createDocumentFragment();
+        
+        smells.forEach(element =>{
+            
+            li=document.createElement("LI");
+            li.innerHTML=element;
+
+            fragment.appendChild(li);
+            console.log(element)
+        } 
+        );
+       
+        const container2=document.getElementById("container2");
+        container2.appendChild(fragment);
+
+    </script>
+</body>
+</html>
