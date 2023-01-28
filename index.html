@@ -84,9 +84,10 @@
        
         const container2=document.getElementById("container2");
         container2.appendChild(fragment);
+
+
         containerthisjar=document.getElementById("containerthisjar");        
         containerotherjars=document.getElementById("containerotherjars");
-
 
         const localStorageContent=JSON.parse(JSON.stringify(localStorage));
 
@@ -97,24 +98,45 @@
                 div=document.createElement("DIV");
                 div.innerHTML=`${key} ${value}`;
                 containerthisjar.appendChild(div);
-
             }
-            else {
-                
+            else {                
                 console.log("Is id",key);
                 div=document.createElement("DIV");
                 div.innerHTML=`${key} ${value}`;
-                containerotherjars.appendChild(div);
-            
-            
+                containerotherjars.appendChild(div);  
             }
             console.log(`${key} ${value}`);
-
         });
 
+        function displayLocalstorage(id){
+            containerthisjar=document.getElementById("containerthisjar");        
+            containerotherjars=document.getElementById("containerotherjars");
+
+            const localStorageContent=JSON.parse(JSON.stringify(localStorage));
+
+            Object.entries(localStorageContent).forEach(([key, value]) => 
+            {
+                if(key==id){
+                    console.log("Is id",key);
+                    div=document.createElement("DIV");
+                    div.innerHTML=`${key} ${value}`;
+                    containerthisjar.appendChild(div);
+                }
+                else {                
+                    console.log("Is id",key);
+                    div=document.createElement("DIV");
+                    div.innerHTML=`${key} ${value}`;
+                    containerotherjars.appendChild(div);  
+                }
+                console.log(`${key} ${value}`);
+            });
+        }
 
 
 
+document.querySelector("body").addEventListener("click",()=>{
+    displayLocalstorage(id);
+})
    
 
 
