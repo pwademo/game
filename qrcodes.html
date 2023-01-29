@@ -8,22 +8,22 @@
 </head>
 <body>
 
-
 <head>
 <script src="./js/qrcode.min.js"></script>
 <style>
 
     #container {
-        display: flex;  
+        display: flex;
         row-gap: 5px;       
         flex-wrap: wrap;
+        padding:5px;
     }
 
     #container div {
-        border: solid cyan 1px;
-        padding:10px;
-       /*  border-radius: 50%; */
+        border: double rgb(223, 255, 136) 5px;
+        padding:5px;      
         margin-right: 5px;     
+        display:inline-flex; 
 
     }
 </style>
@@ -40,15 +40,20 @@ const fragment = document.createDocumentFragment();
 for (let index = 0; index < 10; index++) {
     
     let q=document.createElement("DIV");
-
+    const stringpart1="243268656809097654323";
+    const stringpart2="2548935584568";
+    const stringtot=`${stringpart1}${index}${stringpart2}`;
+    
+    console.log(stringtot.charAt(21),stringtot);
 
     new QRCode(q, {
-            text: `https://pwademo.github.io/game/index.html?id=${index}`,
-            width: 60,
-            height: 60,
-            colorDark : "blue        ",
+            text: `https://pwademo.github.io/game/index.html?id=${stringtot}`,
+            width: 80,
+            height: 80,
+            colorDark : "blue",
             colorLight : "white",
         });  
+
 
     fragment.appendChild(q);
 }
