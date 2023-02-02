@@ -5,191 +5,314 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        body { font-family:Arial , sans-serif;}
+  body { font-family:Arial , sans-serif;}
         #container {
             font-size:16px;
             /* font-weight: bold; */
            min-height: 20px;
         }       
-        #container2 {
+        #containersmells {
         display: flex;  
         row-gap: 5px;       
         flex-wrap: wrap;
     }
 
-        #container2 div {
-        border: solid rgb(65, 110, 110) 3px;
-        padding:10px;
-        border-radius: 5px; 
-        margin-right: 5px;     
-        background-color: lightgrey;
-        cursor: pointer;
+        #containersmells div {
+            border: solid rgb(65, 110, 110) 3px;
+            padding:10px;
+            border-radius: 5px; 
+            margin-right: 5px;     
+            background-color: lightgrey;
+            cursor: pointer;
+        }
 
-    }
-    #containerthisjar  {
-        margin-top: 50px;  
-        /* border: solid 1px black; */
-        padding:5px;
-    }
-    #containerthisjar div {
-        color:green;
-    }
+        #containersmells div.active{
+            background-color: grey;
+        } 
 
+        #containerplayer {
+            font-size: 72
+            
+            32px;
+        }
 
-    #containerotherjars div {
-        color:red;       
-    }   
-     #containerotherjars {
-        margin-top: 15px;    
-        
-        padding:5px;
-        
-      /*   border: solid 1px black; */
-    }
-
-
-
-    
+        table, th, td {
+  border: 1px solid;
+}
+td.green{
+    color: green;
+}
+td.red{
+    color: red;
+}
     </style>
 </head>
-<body>
-    <h1>Game</h1>
-    <div id="container"></div>
+<body><br/><br/><br/>
+<div id="containerplayer" ></div>
+
+    <br/><br/><br/>
+<div id="containersmells"></div>
+<br/><br/><br/>
 
 
-
-    <div id="container2">
-    </div>
-
-       <!--  Dette glas har du gættet er:<br/> -->    
-    <div id="containerthisjar">
-    </div>
-    
-    <!-- Andre glas har du gættet er:<br/> -->
-    <div id="containerotherjars"></div>
-
-    <br/><br/>
-    <button id="clear">Clear</button>
+    <button id="clearGame">Clear Game</button>
+    <br/><br/><br/>
+    <button id="btnGetTotalScore">Get total score</button>
+    <br/><br/><br/>
+<div id="containertotalscore"></div>
 
 
-    <script>
-        const smells=["Hindbær","Lime","Timian","Eddike","Karry","Karamel","Ananas","Pepermynte","Kamille","Kirsebær"];
+    <script defer>
+        /* Lugte i spillet
+        * smells og players sættes af gamemaster vha. en form. De gemmes i localStorage eller IndexedDb.
+        * Her sættes de midlertidig som const.
+        */
+       // const tmpsmells=["Hindbær","Lime","Timian","Eddike","Karry","Karamel","Ananas","Pepermynte","Kamille","Kirsebær"];
+        const tmpsmells=["Hindbær","Lime","Timian","Eddike","Karry","Karamel","Ananas","Pepermynte","Kamille","Kirsebær"];
+        const tmpplayers=["Sara","Peter","Simon"]; 
+        //local variables 
+        let smells;
+        let players;
+        //let hiddensmell=7;
+        let nextplayerindex=-1;
+
+
+        /* Hente parmetre fra querystring*/
         const params = new URLSearchParams(window.location.search.substr(1));
 
-
+        /*henter specifik parametren id fra querystring. Betåre af en række ubrugte værdier for at sløre id på glasset.*/
         const idstring=params.get("id");
         let id=-1;
-        const container=document.getElementById("container");        
+             
 
         if(idstring){
-            id=idstring.charAt(21);
-            container.innerHTML=`Glas: ${id}`;
+            id=idstring.charAt(21);//I position 21 står det nummer vi er ude efter
+            //container.innerHTML=`Glas: ${id}`;
         }
 
 
 
+        function setmove(userid,smellid, guessid){    
+            let game=JSON.parse(localStorage.getItem("game"));//read from localstorage
+            game[smellid][userid]=guessid;//change value
+            localStorage.setItem("game",JSON.stringify(game));  //save to localstorage
+        }
 
-        const fragment = document.createDocumentFragment();
-        
-        smells.forEach(element =>{
-            
-            div=document.createElement("DIV");
-            div.innerHTML=element;
-            div.addEventListener("click", ()=>{      
-                if(parseInt(id)!=NaN && parseInt(id)>=0 && parseInt(id)<=9){  
-/*                 div=document.createElement("DIV");
-                div.innerHTML=`${element}`;
-                containerthisjar.appendChild(div); */
-
-                localStorage.setItem(id,element)
-                displayLocalstorage(id);
-               }
-
-            });
-
-            fragment.appendChild(div);
-            //console.log(element)
+        function createAndFillTwoDArray({rows,columns,defaultValue}){
+            return Array.from({ length:rows }, () => (
+                Array.from({ length:columns }, ()=> defaultValue)
+            ))
         } 
-        );
-       
-        const container2=document.getElementById("container2");
-        container2.appendChild(fragment);
 
-
-        containerthisjar=document.getElementById("containerthisjar");        
-        containerotherjars=document.getElementById("containerotherjars");
-
-  
-        function displayLocalstorage(id){
-            containerthisjar=document.getElementById("containerthisjar");        
-            containerotherjars=document.getElementById("containerotherjars");
-
-            const localStorageContent=JSON.parse(JSON.stringify(localStorage));
-            console.log(localStorageContent);
-            containerotherjars.innerHTML="For andre glas har du gættet:";      
+        function initGame(){
+            if(localStorage.getItem('smells') == null){
+                const shuffledArray = tmpsmells.sort((a, b) => 0.5 - Math.random());
+                localStorage.setItem("smells",JSON.stringify(shuffledArray));                
+            }
+            if(localStorage.getItem('players') == null){
+                const shuffledArray = tmpplayers.sort((a, b) => 0.5 - Math.random());
+                localStorage.setItem("players",JSON.stringify(shuffledArray));                
+            }
             
-            const fragment = document.createDocumentFragment();
+            if(localStorage.getItem('game') == null){
+                let game=createAndFillTwoDArray({rows:tmpsmells.length, columns:tmpplayers.length, defaultValue: -1});
+                localStorage.setItem("game",JSON.stringify(game));   
+                setNextplayer();
+            }
 
-            Object.entries(localStorageContent).forEach(([key, value]) => 
-            {
-
-                if(key==id){          
-                    containerthisjar.innerHTML="For dette glas har du gættet:";
-                    div=document.createElement("DIV");
-                    //div.innerHTML=`${key} ${value}`; 
-                    div.innerHTML=`${value}`;
-                    containerthisjar.appendChild(div);
-                }
-                else {         
-                    console.log("KEY:",key)  ;     
-                    console.log(parseInt(key));
-
-                    if(parseInt(key)!=NaN && parseInt(key)>=0 && parseInt(key)<=9){  
-                        div=document.createElement("DIV");
-                        div.innerHTML=`${value}`;
-                        fragment.appendChild(div);
-                    }
-                }
-                
-            });
-
-            if(fragment.hasChildNodes()){
-                
-                containerotherjars.innerHTML="For andre glas har du gættet:";                    
-                containerotherjars.appendChild(fragment);       
-                  
-            } 
-            else {
-                containerotherjars.innerHTML=""; 
-            };
+            smells=JSON.parse(localStorage.getItem("smells"));   
+            players=JSON.parse(localStorage.getItem("players"));   
             
-
         }
 
 
+        function getGame(){
+            let game=JSON.parse(localStorage.getItem("game"));//read from localstorage        
+            return game;
+        }
 
-/*         document.querySelector("body").addEventListener("click",()=>{
-            displayLocalstorage(id);
-        }) */
-   
-        displayLocalstorage(id);
+        function getRound(gameround){
+            let game=getGame();//read from localstorage
+            let _round=game[gameround];     
+            return _round;
+        }
 
-        document.querySelector("#clear").addEventListener("click",()=>{
+        function getTotalScore(){
+            let game=getGame();//read from localstorage
 
-            if (confirm("Er du sikker på at du vil slette?") == true) {
-                for (let index = 0; index < 10; index++) {
-                //console.log(index);
-                    localStorage.removeItem(index)
-                    
-                }
-                containerotherjars.innerHTML="";  
-                containerthisjar.innerHTML="";               
-                
 
-            } else {
-               
+            const fragment = document.createDocumentFragment();
+            let table=document.createElement("TABLE");
+            let thead=document.createElement("THEAD");
+            let tbody=document.createElement("TBODY");            
+
+            
+            let trheader=document.createElement("TR");   
+            let thleftuppercorner=document.createElement("TH")      
+            trheader.appendChild(thleftuppercorner)       ;
+            for (let col = 0; col < smells.length; col++) { 
+                  let th=document.createElement("TH");
+                  th.append(smells[col]);
+                  trheader.appendChild(th);                                  
             }
+            let thscore=document.createElement("TH")  
+            thscore.append("Point");
+            trheader.appendChild(thscore);
+            thead.appendChild(trheader);
+            table.appendChild(thead);
+
+            
+            for (let row = 0; row < players.length; row++) {                
+                let tr=document.createElement("TR");
+                let tdleft=document.createElement("TD");
+                tdleft.append(players[row])
+                tr.appendChild(tdleft);
+                let points=0;                
+                for (let col = 0; col < smells.length; col++) {  
+
+                    let td=document.createElement("TD");
+                    let smellgeuss="";
+                    if(game[col][row]>=0){
+                        console.log();
+                        if(game[col][row]===col){
+                            points++;
+                            td.setAttribute("class","green");
+                        } else {
+                            td.setAttribute("class","red");
+                        }
+                        smellgeuss=smells[game[col][row]];
+                    };
+                    td.append(smellgeuss);
+                    tr.appendChild(td);        
+                }
+                let tdscore=document.createElement("TD")  
+                tdscore.append(points);
+                tr.appendChild(tdscore);
+                tbody.appendChild(tr);
+            }
+
+
+            table.appendChild(tbody); 
+            fragment.appendChild(table);
+            document.getElementById("containerplayer").appendChild(fragment)
+        }
+
+
+        function getRoundResult(id){
+            var _round=getRound(id);
+            const fragment = document.createDocumentFragment();
+            div=document.createElement("DIV");
+            div.append(`Det rigtige svar var: ${smells[id]}`)
+            fragment.appendChild(div);
+            ul=document.createElement("UL");
+             for (let index = 0; index < _round.length; index++) {
+                li=document.createElement("LI");
+                li.append(`${players[index]}: ${smells[_round[index]]}`)
+
+                ul.appendChild(li) ;
+                fragment.appendChild(ul);
+             }
+
+             document.getElementById("containerplayer").appendChild(fragment)
+
+        }
+
+        function setNextplayer(){
+            //alert(id);
+            let playersThisSmell=getRound(id);
+            nextplayerindex = playersThisSmell.findIndex(rank => rank === -1);
+            if(nextplayerindex==-1){
+                //Ikke flere spillere i denne runde
+                document.getElementById("containerplayer").innerText="Ikke flere spillere i denne runde";    
+                getRoundResult(id);
+                document.getElementById("containersmells").innerHTML="";
+                
+            }
+            else {
+                document.getElementById("containerplayer").innerText=players[nextplayerindex];               
+            }
+
+        }
+
+        document.getElementById("clearGame").addEventListener("click",()=>{
+            localStorage.removeItem("game");
+            localStorage.removeItem("players");
+            localStorage.removeItem("smells");
+            initGame();
         })
+        function clearGame(){
+            localStorage.clear;
+        }
+      //  clearGame();
+        initGame();
+        setNextplayer();
+
+
+        function drawContainerSmells(){
+            const fragment = document.createDocumentFragment();
+                    
+                    smells.forEach((element,index) =>{
+                        
+                        div=document.createElement("DIV");
+                        div.setAttribute('data-id', index);
+
+
+                        div.innerHTML=element ;
+                        div.addEventListener("click", (e)=>
+                        {      
+                            //alert(index);
+
+
+                            setmove(nextplayerindex,id,index);
+                            setNextplayer();
+                           
+                            //remove class active form siblings
+/*                             let siblings = e.target.parentElement.children;
+                            for(let sib of siblings) {
+                                sib.classList.remove('active')
+                            }
+                            if(parseInt(id)!=NaN && parseInt(id)>=0 && parseInt(id)<=9){  
+
+                                
+                                //e.target.classList.add('active');
+                            
+                                
+                               // displayLocalstorage(id);
+                            } */
+
+                        });
+
+                        fragment.appendChild(div);
+
+                    } 
+                    );
+
+            document.getElementById("containersmells").appendChild(fragment);   
+
+        };
+
+        drawContainerSmells();
+
+
+
+        document.getElementById("btnGetTotalScore").addEventListener("click",getTotalScore);
+
+
+        console.table(players);
+        console.table(smells);
+        console.table(getGame());
+
+        if(id){
+
+
+
+
+             
+
+      
+
+        }
+
 
     </script>
 </body>
