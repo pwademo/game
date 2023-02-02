@@ -106,8 +106,10 @@ td.red{
 
         function initGame(){
             if(localStorage.getItem('smells') == null){
-                const shuffledArray = tmpsmells.sort((a, b) => 0.5 - Math.random());
-                localStorage.setItem("smells",JSON.stringify(shuffledArray));                
+                //const shuffledArray = tmpsmells.sort((a, b) => 0.5 - Math.random());
+                //localStorage.setItem("smells",JSON.stringify(shuffledArray));  
+                localStorage.setItem("smells",JSON.stringify(smells));  
+
             }
             if(localStorage.getItem('players') == null){
                 const shuffledArray = tmpplayers.sort((a, b) => 0.5 - Math.random());
