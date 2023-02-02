@@ -38,7 +38,9 @@
 
         table, th, td {
   border: 1px solid;
+
 }
+td{padding:4px;}
 td.green{
     color: green;
 }
@@ -62,13 +64,14 @@ td.red{
 <div id="containertotalscore"></div>
 
 
-    <script defer>
+    <script >
         /* Lugte i spillet
         * smells og players sættes af gamemaster vha. en form. De gemmes i localStorage eller IndexedDb.
         * Her sættes de midlertidig som const.
         */
        // const tmpsmells=["Hindbær","Lime","Timian","Eddike","Karry","Karamel","Ananas","Pepermynte","Kamille","Kirsebær"];
         const tmpsmells=["Hindbær","Lime","Timian","Eddike","Karry","Karamel","Ananas","Pepermynte","Kamille","Kirsebær"];
+        
         const tmpplayers=["Sara","Peter","Simon"]; 
         //local variables 
         let smells;
@@ -106,9 +109,9 @@ td.red{
 
         function initGame(){
             if(localStorage.getItem('smells') == null){
-                //const shuffledArray = tmpsmells.sort((a, b) => 0.5 - Math.random());
+                //const shuffledSmellArray = tmpsmells.sort((a, b) => 0.5 - Math.random());
                 //localStorage.setItem("smells",JSON.stringify(shuffledArray));  
-                localStorage.setItem("smells",JSON.stringify(smells));  
+                localStorage.setItem("smells",JSON.stringify(tmpsmells));  
 
             }
             if(localStorage.getItem('players') == null){
@@ -196,6 +199,7 @@ td.red{
 
             table.appendChild(tbody); 
             fragment.appendChild(table);
+            document.getElementById("containerplayer").innerHTML="";
             document.getElementById("containerplayer").appendChild(fragment)
         }
 
@@ -215,7 +219,7 @@ td.red{
                 fragment.appendChild(ul);
              }
 
-             document.getElementById("containerplayer").appendChild(fragment)
+             document.getElementById("containertotalscore").appendChild(fragment)
 
         }
 
@@ -252,6 +256,7 @@ td.red{
 
         function drawContainerSmells(){
             const fragment = document.createDocumentFragment();
+            //const shuffledSmellArray = smells.sort((a, b) => 0.5 - Math.random());
                     
                     smells.forEach((element,index) =>{
                         
@@ -268,19 +273,7 @@ td.red{
                             setmove(nextplayerindex,id,index);
                             setNextplayer();
                            
-                            //remove class active form siblings
-/*                             let siblings = e.target.parentElement.children;
-                            for(let sib of siblings) {
-                                sib.classList.remove('active')
-                            }
-                            if(parseInt(id)!=NaN && parseInt(id)>=0 && parseInt(id)<=9){  
 
-                                
-                                //e.target.classList.add('active');
-                            
-                                
-                               // displayLocalstorage(id);
-                            } */
 
                         });
 
@@ -303,6 +296,10 @@ td.red{
         console.table(players);
         console.table(smells);
         console.table(getGame());
+
+        containertotalscore
+        document.getElementById("containertotalscore").append(id)
+      // document.getElementById(id)
 
         if(id){
 
