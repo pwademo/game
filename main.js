@@ -375,5 +375,8 @@ console.table(game2);
 
    
 });
-
+document.getElementById("btnDisplayBrowserVersion").addEventListener("click",()=>{
+    var v = "Version: " + navigator.userAgent;
+    document.getElementById("DisplayBrowserVersion").innerHTML = v;
+})
 
