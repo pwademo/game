@@ -4,314 +4,43 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-  body { font-family:Arial , sans-serif;}
-        #container {
-            font-size:16px;
-            /* font-weight: bold; */
-           min-height: 20px;
-        }       
-        #containersmells {
-        display: flex;  
-        row-gap: 5px;       
-        flex-wrap: wrap;
-    }
 
-        #containersmells div {
-            border: solid rgb(65, 110, 110) 3px;
-            padding:10px;
-            border-radius: 5px; 
-            margin-right: 5px;     
-            background-color: lightgrey;
-            cursor: pointer;
-        }
-
-        #containersmells div.active{
-            background-color: grey;
-        } 
-
-        #containerplayer {
-            font-size:    32px;
-            font-weight: bolder;
-        }
-
-        table, th, td {
-  border: 1px solid;
-
-}
-td{padding:4px;}
-td.green{
-    color: green;
-}
-td.red{
-    color: red;
-}
-    </style>
+ <link rel="stylesheet" href="style.css">
+<script src="./main.js" defer></script>
 </head>
-<body><br/><br/><br/>
-<div id="containerplayer" ></div>
-
-    <br/><br/><br/>
-<div id="containersmells"></div>
-<br/><br/><br/>
 
 
-    <button id="clearGame">Clear Game</button>
-    <br/><br/><br/>
-    <button id="btnGetTotalScore">Get total score</button>
-    <br/><br/><br/>
-<div id="containertotalscore"></div>
+<!-- Hvem er næste player, er runden slut, er spillet slut -->
+<div class="container" id="containerplayer" ></div>
 
+<!--Trykknapper til de forskellige lugte-->
+<div class="container" id="containersmells">
+    ***
+</div>
 
-    <script >
-        /* Lugte i spillet
-        * smells og players sættes af gamemaster vha. en form. De gemmes i localStorage eller IndexedDb.
-        * Her sættes de midlertidig som const.
-        */
-       // const tmpsmells=["Hindbær","Lime","Timian","Eddike","Karry","Karamel","Ananas","Pepermynte","Kamille","Kirsebær"];
-        const tmpsmells=["Hindbær","Lime","Timian","Eddike","Karry","Karamel","Ananas","Pepermynte","Kamille","Kirsebær"];
-        
-        const tmpplayers=["Sara","Peter","Simon"]; 
-        //local variables 
-        let smells;
-        let players;
-        //let hiddensmell=7;
-        let nextplayerindex=-1;
+<!--Tabel med total score-->
+<div class="container" id="containertotalscore"></div>
 
+<!--Reset spil og se total score-->
+<button id="btnClearGame">Clear Game</button> <button id="btnGetTotalScore">Get total score</button>
 
-        /* Hente parmetre fra querystring*/
-        const params = new URLSearchParams(window.location.search.substr(1));
-
-        /*henter specifik parametren id fra querystring. Betåre af en række ubrugte værdier for at sløre id på glasset.*/
-        const idstring=params.get("id");
-        let id=-1;
-             
-
-        if(idstring){
-            id=idstring.charAt(21);//I position 21 står det nummer vi er ude efter
-            //container.innerHTML=`Glas: ${id}`;
-        }
+<!--Debug så man ikke behøver scanne for at få en ny prøve-->
+<!-- <div class="container">
+    <p>Debug:</p>
+    <a href="./index.html">Home</a>
+    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx0">0</a>
+    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx1">1</a>
+    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx2">2</a>
+    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx3">3</a>
+    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx4">4</a>
+    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx5">5</a>
+    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx6">6</a>
+    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx7">7</a>
+    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx8">8</a>
+    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx9">9</a>    
+</div> -->
 
 
 
-        function setmove(userid,smellid, guessid){    
-            let game=JSON.parse(localStorage.getItem("game"));//read from localstorage
-            game[smellid][userid]=guessid;//change value
-            localStorage.setItem("game",JSON.stringify(game));  //save to localstorage
-        }
-
-        function createAndFillTwoDArray({rows,columns,defaultValue}){
-            return Array.from({ length:rows }, () => (
-                Array.from({ length:columns }, ()=> defaultValue)
-            ))
-        } 
-
-        function initGame(){
-            if(localStorage.getItem('smells') == null){
-                //const shuffledSmellArray = tmpsmells.sort((a, b) => 0.5 - Math.random());
-                //localStorage.setItem("smells",JSON.stringify(shuffledArray));  
-                localStorage.setItem("smells",JSON.stringify(tmpsmells));  
-
-            }
-            if(localStorage.getItem('players') == null){
-                const shuffledArray = tmpplayers.sort((a, b) => 0.5 - Math.random());
-                localStorage.setItem("players",JSON.stringify(shuffledArray));                
-            }
-            
-            if(localStorage.getItem('game') == null){
-                let game=createAndFillTwoDArray({rows:tmpsmells.length, columns:tmpplayers.length, defaultValue: -1});
-                localStorage.setItem("game",JSON.stringify(game));   
-                setNextplayer();
-            }
-
-            smells=JSON.parse(localStorage.getItem("smells"));   
-            players=JSON.parse(localStorage.getItem("players"));   
-            
-        }
-
-
-        function getGame(){
-            let game=JSON.parse(localStorage.getItem("game"));//read from localstorage        
-            return game;
-        }
-
-        function getRound(gameround){
-            let game=getGame();//read from localstorage
-            let _round=game[gameround];     
-            return _round;
-        }
-
-        function getTotalScore(){
-            let game=getGame();//read from localstorage
-
-
-            const fragment = document.createDocumentFragment();
-            let table=document.createElement("TABLE");
-            let thead=document.createElement("THEAD");
-            let tbody=document.createElement("TBODY");            
-
-            
-            let trheader=document.createElement("TR");   
-            let thleftuppercorner=document.createElement("TH")      
-            trheader.appendChild(thleftuppercorner)       ;
-            for (let col = 0; col < smells.length; col++) { 
-                  let th=document.createElement("TH");
-                  th.append(smells[col]);
-                  trheader.appendChild(th);                                  
-            }
-            let thscore=document.createElement("TH")  
-            thscore.append("Point");
-            trheader.appendChild(thscore);
-            thead.appendChild(trheader);
-            table.appendChild(thead);
-
-            
-            for (let row = 0; row < players.length; row++) {                
-                let tr=document.createElement("TR");
-                let tdleft=document.createElement("TD");
-                tdleft.append(players[row])
-                tr.appendChild(tdleft);
-                let points=0;                
-                for (let col = 0; col < smells.length; col++) {  
-
-                    let td=document.createElement("TD");
-                    let smellgeuss="";
-                    if(game[col][row]>=0){
-                        console.log();
-                        if(game[col][row]===col){
-                            points++;
-                            td.setAttribute("class","green");
-                        } else {
-                            td.setAttribute("class","red");
-                        }
-                        smellgeuss=smells[game[col][row]];
-                    };
-                    td.append(smellgeuss);
-                    tr.appendChild(td);        
-                }
-                let tdscore=document.createElement("TD")  
-                tdscore.append(points);
-                tr.appendChild(tdscore);
-                tbody.appendChild(tr);
-            }
-
-
-            table.appendChild(tbody); 
-            fragment.appendChild(table);
-            document.getElementById("containerplayer").innerHTML="";
-            document.getElementById("containerplayer").appendChild(fragment)
-        }
-
-
-        function getRoundResult(id){
-            var _round=getRound(id);
-            const fragment = document.createDocumentFragment();
-            div=document.createElement("DIV");
-            div.append(`Det rigtige svar var: ${smells[id]}`)
-            fragment.appendChild(div);
-            ul=document.createElement("UL");
-             for (let index = 0; index < _round.length; index++) {
-                li=document.createElement("LI");
-                li.append(`${players[index]}: ${smells[_round[index]]}`)
-
-                ul.appendChild(li) ;
-                fragment.appendChild(ul);
-             }
-
-             document.getElementById("containertotalscore").appendChild(fragment)
-
-        }
-
-        function setNextplayer(){
-            //alert(id);
-            let playersThisSmell=getRound(id);
-            nextplayerindex = playersThisSmell.findIndex(rank => rank === -1);
-            if(nextplayerindex==-1){
-                //Ikke flere spillere i denne runde
-                document.getElementById("containerplayer").innerText="Ikke flere spillere i denne runde";    
-                getRoundResult(id);
-                document.getElementById("containersmells").innerHTML="";
-                
-            }
-            else {
-                document.getElementById("containerplayer").innerText=players[nextplayerindex];               
-            }
-
-        }
-
-        document.getElementById("clearGame").addEventListener("click",()=>{
-            localStorage.removeItem("game");
-            localStorage.removeItem("players");
-            localStorage.removeItem("smells");
-            initGame();
-        })
-        function clearGame(){
-            localStorage.clear;
-        }
-      //  clearGame();
-        initGame();
-        setNextplayer();
-
-
-        function drawContainerSmells(){
-            const fragment = document.createDocumentFragment();
-            //const shuffledSmellArray = smells.sort((a, b) => 0.5 - Math.random());
-                    
-                    smells.forEach((element,index) =>{
-                        
-                        div=document.createElement("DIV");
-                        div.setAttribute('data-id', index);
-
-
-                        div.innerHTML=element ;
-                        div.addEventListener("click", (e)=>
-                        {      
-                            //alert(index);
-
-
-                            setmove(nextplayerindex,id,index);
-                            setNextplayer();
-                           
-
-
-                        });
-
-                        fragment.appendChild(div);
-
-                    } 
-                    );
-
-            document.getElementById("containersmells").appendChild(fragment);   
-
-        };
-
-        drawContainerSmells();
-
-
-
-        document.getElementById("btnGetTotalScore").addEventListener("click",getTotalScore);
-
-
-        console.table(players);
-        console.table(smells);
-        console.table(getGame());
-
-        containertotalscore
-        //document.getElementById("containertotalscore").append(id)
-      // document.getElementById(id)
-
-        if(id){
-
-
-
-
-             
-
-      
-
-        }
-
-
-    </script>
 </body>
 </html>

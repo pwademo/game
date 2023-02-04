@@ -1,0 +1,94 @@
+
+body { 
+    font-family:Arial , sans-serif;
+}
+
+#container {
+    font-size:16px;
+    /* font-weight: bold; */
+    min-height: 20px;
+}       
+
+#containersmells {
+    display: flex;  
+    row-gap: 5px;       
+    flex-wrap: wrap;
+}
+
+#containersmells div {
+    border: solid rgb(65, 110, 110) 3px;
+    padding:10px;
+    border-radius: 5px; 
+    margin-right: 5px;     
+    background-color: lightgrey;
+    cursor: pointer;
+}
+
+#containersmells div.active{
+    background-color: grey;
+} 
+
+#containerplayer {
+    font-size:    32px;
+    font-weight: bolder;
+}
+
+table, th, td {
+    border: 1px solid;
+}
+td  
+    {padding:4px;}
+
+td.green{
+    color: green;
+    border-color: white;
+}
+
+td.red{
+    color: red;
+    border-color: white;
+}
+td {
+ 
+    border-color: white;
+}
+span.green{
+    color: green;
+   
+}
+
+span.red{
+    color: red;
+}
+
+
+
+.container {            
+    margin:25px 0px
+}
+
+table {
+    border-collapse: collapse;
+    
+    margin: 25px 0;
+    font-size: 0.4em;
+   /*  font-family: sans-serif; */
+    min-width: 300px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+table thead tr {
+    background-color: #aaa;
+    color: #ffffff;
+    text-align: left;
+    
+}
+table th,
+table td {
+    padding: 4px 8px;
+}
+
+table tbody tr {
+    background-color: #f3f3f3;
+}
+
