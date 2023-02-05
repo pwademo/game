@@ -2,6 +2,19 @@
 
 document.addEventListener("DOMContentLoaded", function(){
 
+
+  //try to read localstorage to se if user is in "private browsing"
+  const value=localStorage.getItem("game2")
+  if(value==null){
+    document.getElementById("containerprivatebrowsing").style.display="block"
+  }
+  console.log("Private Browsing",value);
+
+
+  
+
+
+
 const containerplayer=document.getElementById("containerplayer");
 const containertotalscore=document.getElementById("containertotalscore");
 const containersmells=document.getElementById("containersmells");     

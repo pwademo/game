@@ -1,6 +1,17 @@
 
 body { 
     font-family:Arial , sans-serif;
+    position: relative;
+}
+
+#containerprivatebrowsing{
+    max-width: 180px;
+    position: absolute;
+    right: 0px;
+   /*  bottom: 0px; */
+    background-color: yellow;
+    padding: 10px;
+    display: none;
 }
 
 #container {
