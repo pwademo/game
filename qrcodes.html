@@ -14,15 +14,16 @@
 
     #container {
         display: flex;
-        row-gap: 5px;       
+        row-gap: 0px;       
         flex-wrap: wrap;
-        padding:5px;
+        padding:0px;
+      /*   border: solid black 1px; */
     }
 
     #container div {
-        border: double rgb(223, 255, 136) 5px;
-        padding:5px;      
-        margin-right: 5px;     
+        border: solid white 1px;
+        padding:0px;      
+        margin-right: 0px;     
         display:inline-flex; 
 
     }
@@ -37,21 +38,40 @@
 let container=document.getElementById("container");
 const fragment = document.createDocumentFragment();
 
-for (let index = 0; index < 10; index++) {
+for (let index = 0; index < 20; index++) {
     
+   
+    let number0=0;
+    let number1=index.toString()[0];
+    if(index>=10){
+     number0=index.toString()[0];
+     number1=index.toString()[1];
+    }
+
+  
+
+
+    console.log("NUM0",number0);
+    console.log("NUM1",number1);
+
     let q=document.createElement("DIV");
-    const stringpart1="243268656809097654323";
-    const stringpart2="2548935584568";
-    const stringtot=`${stringpart1}${index}${stringpart2}`;
-    
-    console.log(stringtot.charAt(21),stringtot);
+    const stringpart1="583820583628305678943";//21 tal
+    const stringpart2="59523";    //5 tal
+    const stringpart3="734"; // 3 tal
+    const stringtot=`${stringpart1}${number1}${stringpart2}${number0}${stringpart3}`;
+
+    console.log("TEN:",stringtot.charAt(27));    
+    console.log("ONE:",stringtot.charAt(21));
+
+    console.log(stringtot);
 
     new QRCode(q, {
             text: `https://pwademo.github.io/game/index.html?id=${stringtot}`,
             width: 80,
             height: 80,
-            colorDark : "blue",
-            colorLight : "white",
+            colorDark : "white",
+            colorLight : "black"
+            ,
         });  
 
 
