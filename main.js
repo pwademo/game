@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", function(){
   }
   
   function initSmells(){
-      const defaultsmells=[{id:0,name:"Hindbær"},{id:1,name:"Lime"},{id:2,name:"Timian"},{id:3,name:"Eddike"},{id:4,name:"Karry"},{id:5,name:"Karamel"},{id:6,name:"Ananas"},{id:7,name:"Pepermynte"},{id:8,name:"Kamille"},{id:9,name:"Kirsebær"}];
+      const defaultsmells=[{id:0,name:"Hindbær"},{id:1,name:"Lime"},{id:2,name:"Timian"},{id:3,name:"Eddike"},{id:4,name:"Karry"},{id:5,name:"Karamel"},{id:6,name:"Ananas"},{id:7,name:"Pepermynte"},{id:8,name:"Kamille"},{id:9,name:"Kirsebær"},{id:10,name:"Abrikos"},{id:11,name:"Melon"},{id:12,name:"Appelsin"},{id:13,name:"Koriander"},{id:14,name:"Spidskommen14"},{id:15,name:"Kaffe"},{id:16,name:"Kanel"},{id:17,name:"Mandel"},{id:18,name:"Vanilje"},{id:19,name:"Rom"}];
       const shuffledSmellArray = defaultsmells.sort((a, b) => 0.5 - Math.random());
       setSmells(shuffledSmellArray);
       return JSON.stringify(shuffledSmellArray);

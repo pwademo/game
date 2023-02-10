@@ -16,7 +16,7 @@
         display: flex;
         row-gap: 0px;       
         flex-wrap: wrap;
-        padding:0px;
+        padding:1px;
       /*   border: solid black 1px; */
     }
 
@@ -38,7 +38,7 @@
 let container=document.getElementById("container");
 const fragment = document.createDocumentFragment();
 
-for (let index = 0; index < 20; index++) {
+for (let index = 0; index < 2; index++) {
     
    
     let number0=0;
@@ -63,17 +63,27 @@ for (let index = 0; index < 20; index++) {
     console.log("TEN:",stringtot.charAt(27));    
     console.log("ONE:",stringtot.charAt(21));
 
-    console.log(stringtot);
+    console.log(stringtot);    
 
-    new QRCode(q, {
+/*     new QRCode(q, {
             text: `https://pwademo.github.io/game/index.html?id=${stringtot}`,
-            width: 80,
-            height: 80,
-            colorDark : "white",
-            colorLight : "black"
-            ,
-        });  
+            width: 60,
+            height: 60,
+            colorDark : "black",
+            colorLight : "white",
+            correctLevel : QRCode.CorrectLevel.M
+            
+        });   */
 
+        new QRCode(q, {
+            text: `https://quistgaard.dk?id=${stringtot}`,
+            width: 60,
+            height: 60,
+            colorDark : "black",
+            colorLight : "white",
+            correctLevel : QRCode.CorrectLevel.M
+            
+        });  
 
     fragment.appendChild(q);
 }
