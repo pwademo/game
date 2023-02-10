@@ -31,9 +31,9 @@ document.addEventListener("DOMContentLoaded", function(){
    game2=getGame2();
   
   
-  function setGame(game){
+/*   function setGame(game){
       localStorage.setItem("game",JSON.stringify(game));
-  };
+  }; */
   function setGame2(game2){
       localStorage.setItem("game2",JSON.stringify(game2));
   };
@@ -251,6 +251,9 @@ document.addEventListener("DOMContentLoaded", function(){
       containerplayer.innerHTML="";
       containertotalscore.innerHTML="";
       containersmells.innerHTML="";   
+
+      setGame2(game2);
+      location.reload();
   }
   
   
