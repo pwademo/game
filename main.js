@@ -251,8 +251,8 @@ document.addEventListener("DOMContentLoaded", function(){
       containerplayer.innerHTML="";
       containertotalscore.innerHTML="";
       containersmells.innerHTML="";   
-
-      setGame2(game2);
+      initGame2(smells,players)
+     // setGame2(game2);
       location.reload();
   }
   
