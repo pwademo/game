@@ -22,6 +22,9 @@ document.addEventListener("DOMContentLoaded", function(){
   
   const containerplayer=document.getElementById("containerplayer");
   const containertotalscore=document.getElementById("containertotalscore");
+  const containerplayers=document.getElementById("containerplayers");
+  
+  
   const containersmells=document.getElementById("containersmells");     
   const btnClearGame=document.getElementById("btnClearGame");
   const btnGetTotalScore=document.getElementById("btnGetTotalScore");
@@ -63,7 +66,7 @@ document.addEventListener("DOMContentLoaded", function(){
   }
   
   function initPlayers(){
-      const defaultplayers=["Kjeld","Peter"];     
+      const defaultplayers=[];     
       setPlayers(defaultplayers);
       return JSON.stringify(defaultplayers);
   }
@@ -285,6 +288,7 @@ document.addEventListener("DOMContentLoaded", function(){
    
   
   drawContainerSmells();
+  drawContainerPlayers();
   
   
   
@@ -295,12 +299,63 @@ document.addEventListener("DOMContentLoaded", function(){
   
   console.table(players);
   console.table(smells);
-  console.table(game2);
+  console.table("GAME:",game2);
   
   
+
+ function deletePlayer(playerName){
+    var index = players.indexOf(playerName);
+    if (index !== -1) {
+        players.splice(index, 1);
+        setPlayers(players);
+        initGame2(smells,players) ;       
+        location.reload();
+    } 
+ }
+
+ function addPlayer(playerName){
+        players.push(playerName);
+        setPlayers(players);//save to loalstorage
+        initGame2(smells,players);       
+        location.reload();
+ } 
+ 
+
+
+
+function drawContainerPlayers(){
+    const fragment = document.createDocumentFragment();    
+    
+            
+    players.forEach((item) =>{                               
+                div=document.createElement("DIV"); 
+                deletebutton=document.createElement("BUTTON");
+                deletebutton.innerText="x"; 
+                div.appendChild(deletebutton);
+
+                div.append(item) ;
+
+                deletebutton.addEventListener("click", (e)=>
+                {                         
+                    deletePlayer(item);                    
+                }); 
+
+                fragment.appendChild(div);
+
+            } 
+            );
+            containerplayers.innerHTML="";
+            containerplayers.appendChild(fragment); 
+};
+
   
-  
-  
+  document.getElementById("btnAddPlayer").addEventListener("click",()=>{
+    let playerName=document.getElementById("txtPlayerName").value;
+    if(playerName){
+        addPlayer(playerName);
+    }
+    
+  });
   
      
   });
