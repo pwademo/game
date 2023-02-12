@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>QR codes</title>
 </head>
 <body>
 
@@ -38,7 +38,7 @@
 let container=document.getElementById("container");
 const fragment = document.createDocumentFragment();
 
-for (let index = 0; index < 2; index++) {
+for (let index = 0; index < 30; index++) {
     
    
     let number0=0;
@@ -65,25 +65,18 @@ for (let index = 0; index < 2; index++) {
 
     console.log(stringtot);    
 
-/*     new QRCode(q, {
-            text: `https://pwademo.github.io/game/index.html?id=${stringtot}`,
-            width: 60,
-            height: 60,
-            colorDark : "black",
-            colorLight : "white",
-            correctLevel : QRCode.CorrectLevel.M
-            
-        });   */
-
+/**/     
         new QRCode(q, {
-            text: `https://quistgaard.dk?id=${stringtot}`,
-            width: 60,
-            height: 60,
+            text: `https://pwademo.github.io/game/index.html?id=${stringtot}`,
+            width: 90,
+            height: 90,
             colorDark : "black",
             colorLight : "white",
             correctLevel : QRCode.CorrectLevel.M
             
-        });  
+        });   
+
+
 
     fragment.appendChild(q);
 }

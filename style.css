@@ -3,15 +3,22 @@ body {
     font-family:Arial , sans-serif;
     position: relative;
     margin:0
-
 }
 
 
 #btnClearGame {
     position: absolute;
-    bottom: 0px;
+    bottom: 10px;
+    left:10px;
     z-index: 100;
 }
+
+
+#containersetup{
+    display: none;
+
+}
+
 
 #containerprivatebrowsing{
    /*  max-width: 180px; */

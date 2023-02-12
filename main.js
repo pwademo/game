@@ -72,12 +72,13 @@ document.addEventListener("DOMContentLoaded", function(){
   }
   
   function initSmells(){
-      const defaultsmells=[{id:0,name:"Hindbær"},{id:1,name:"Lime"},{id:2,name:"Timian"},{id:3,name:"Eddike"},{id:4,name:"Karry"},{id:5,name:"Karamel"},{id:6,name:"Ananas"},{id:7,name:"Pepermynte"},{id:8,name:"Kamille"},{id:9,name:"Kirsebær"},{id:10,name:"Abrikos"},{id:11,name:"Melon"},{id:12,name:"Appelsin"},{id:13,name:"Koriander"},{id:14,name:"Spidskommen"},{id:15,name:"Kaffe"},{id:16,name:"Kanel"},{id:17,name:"Mandel"},{id:18,name:"Vanilje"},{id:19,name:"Rom"}];
+      const defaultsmells=[{id:0,name:"Hindbær",isactive:true},{id:1,name:"Lime",isactive:true},{id:2,name:"Timian",isactive:true},{id:3,name:"Eddike",isactive:true},{id:4,name:"Karry",isactive:true},{id:5,name:"Karamel",isactive:true},{id:6,name:"Ananas",isactive:true},{id:7,name:"Pepermynte",isactive:true},{id:8,name:"Kamille",isactive:true},{id:9,name:"Kirsebær",isactive:true},{id:10,name:"Abrikos",isactive:true},{id:11,name:"Melon",isactive:true},{id:12,name:"Appelsin",isactive:true},{id:13,name:"Koriander",isactive:true},{id:14,name:"Spidskommen",isactive:true},{id:15,name:"Kaffe",isactive:true},{id:16,name:"Kanel",isactive:true},{id:17,name:"Mandel",isactive:true},{id:18,name:"Vanilje",isactive:true},{id:19,name:"Rom",isactive:true}];
       const shuffledSmellArray = defaultsmells.sort((a, b) => 0.5 - Math.random());
       setSmells(shuffledSmellArray);
       return JSON.stringify(shuffledSmellArray);
   }
   
+
 
   
   function initGame2(smells,players){
@@ -119,8 +120,17 @@ document.addEventListener("DOMContentLoaded", function(){
   }
   
   function getRound(gameround){  
-      let _round2 = game2.find(field => field.id == gameround).Guesses;       
-      return _round2;
+      console.log("ROUND",gameround);
+      let _round=game2.find(field => field.id == gameround);
+      if(_round===undefined){
+        addSmell(gameround);
+      }
+      
+      if(_round){
+        return _round.Guesses; 
+      }           
+
+      return 0;
   }
   
   
@@ -183,7 +193,11 @@ document.addEventListener("DOMContentLoaded", function(){
   
   function getSmellNameById(id){
       if(id===-1) return "";
-      let name = smells.find(field => field.id == id).name;           
+      _smell= smells.find(field => field.id == id);
+      if(_smell==undefined){
+        return "";
+      }
+      let name = _smell.name;           
       return name;
   }
   
@@ -227,6 +241,7 @@ document.addEventListener("DOMContentLoaded", function(){
   /**/
   function setNextplayer(){            
       let playersThisSmell=getRound(id);
+      if(playersThisSmell){
       nextplayerindex = playersThisSmell.findIndex(rank => rank === -1);
       if(nextplayerindex==-1){
           //Ikke flere spillere i denne runde - alle har afgivet et gæt på indholdet i glasset
@@ -238,6 +253,7 @@ document.addEventListener("DOMContentLoaded", function(){
           
           containerplayer.innerText=getPlayerNameById(nextplayerindex);               
       }
+    }
   
   }
   
@@ -264,9 +280,12 @@ document.addEventListener("DOMContentLoaded", function(){
   
   
   function drawContainerSmells(){
-      const fragment = document.createDocumentFragment();    
+      const fragment = document.createDocumentFragment(); 
+      let _game=game2.filter((item)=>item.isactive && item.isactive==true);   
               
-      game2.forEach((item) =>{                               
+      _game.forEach((item) =>{         
+                  
+                 
                   div=document.createElement("DIV");
                   div.setAttribute('data-id', item.id);
                   div.innerHTML=item.name ;
@@ -348,17 +367,79 @@ function drawContainerPlayers(){
             containerplayers.appendChild(fragment); 
 };
 
+
+const inputSmell=document.getElementById("inputSmell");
+const chkboxSmellIsactive=document.getElementById("chkboxSmellIsactive");
+
+
+  function getSmellForEdit(){
+    let _smell = smells.find(field => field.id == id);  
+    if(_smell===undefined){
+        addSmell(id);
+    }
+
+    if(_smell){
+        inputSmell.value=_smell.name;
+        chkboxSmellIsactive.checked=_smell.isactive;
+    }
+  }
+
+
+  getSmellForEdit();
+
+//function to add smell if not in game
+ function addSmell(id){
+    if(id!=-1){
+        let newsmell={
+            "id":id,
+            "name":"",
+            "isactive":false
+        }
+
+        smells.push(newsmell);
+        setSmells(smells);//save to loalstorage
+        initGame2(smells,players);       
+        location.reload();
+    }
+ }
+
+  function saveSmell(){
+    let smell = smells.find(field => field.id == id);   
+    smell.name=inputSmell.value;
+    smell.isactive=chkboxSmellIsactive.checked;
+
+    setSmells(smells);//save to loalstorage
+    initGame2(smells,players);       
+    location.reload();
+  }
+
+  document.getElementById("btnSaveSmell").addEventListener("click",saveSmell);
   
   document.getElementById("btnAddPlayer").addEventListener("click",()=>{
     let playerName=document.getElementById("txtPlayerName").value;
     if(playerName){
         addPlayer(playerName);
-    }
-    
+    }    
   });
   
      
+
+
+  
   });
+
+
+
+  document.getElementById("btnShowSetup").addEventListener("click",()=>{
+    const containersetup = document.getElementById("containersetup");
+
+    if (containersetup.style.display === "none") {
+        containersetup.style.display = "block";
+    } else {
+        containersetup.style.display = "none";
+    }
+})
+  
   document.getElementById("btnDisplayBrowserVersion").addEventListener("click",()=>{
       var v = "Version: " + navigator.userAgent;
       document.getElementById("DisplayBrowserVersion").innerHTML = v;

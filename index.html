@@ -48,16 +48,43 @@
 <button id="btnDisplayBrowserVersion" style="display: none;">Return Browser version</button>
 
 
-<input type="text" name="" id="txtPlayerName" placeholder="new player">
-<button id="btnAddPlayer" >Add</button>
+<button id="btnShowSetup" ">Show Setup</button>
 
 
+<div id="containersetup">
+    <fieldset>
+    <legend>Players:</legend> 
+    <input type="text" name="txtPlayerName" id="txtPlayerName" placeholder="new player">
+    <button id="btnAddPlayer" >Add</button>
+    <div class="container" id="containerplayers">
+        
+    </div>
+    </fieldset>
 
-<div class="container" id="containerplayers">
-    
+    <fieldset>
+        <legend>Smell:</legend> 
+        <p>
+            <input id="inputSmell" type="text" name=""  placeholder="">
+        </p>
+        <p>
+            <input type="checkbox" id="chkboxSmellIsactive" ><label for="chkboxSmellIsactive">Is active</label> 
+        </p>
+        <p>
+            <button id="btnSaveSmell" >Save</button>
+        </p>
+
+
+    </fieldset>
 </div>
+
+
 
 <div id="DisplayBrowserVersion" style="display: none;"></div>
 
+
+
+
+    
+</div>
 </body>
 </html>
