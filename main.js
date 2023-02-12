@@ -8,12 +8,21 @@ let game2;
 document.addEventListener("DOMContentLoaded", function(){
 
 
-    //try to read localstorage to se if user is in "private browsing"
+    //try to read localstorage to se if the user is in "private browsing"
     const value=localStorage.getItem("players")
-    if(value==null){
-      document.getElementById("containerprivatebrowsing").style.display="block"
+    if(value){
+         let _players= JSON.parse(value);
+         let numberOfPlayers=_players.length;
+         if(numberOfPlayers>0){
+            console.log("Players in localStorage:",value.length)
+         } else {
+            console.log("NO players is in localStorage");
+            document.getElementById("containerprivatebrowsing").style.display="block"
+        }
     }
-    console.log("Private Browsing",value);
+  
+    
+
   
   
     
@@ -434,11 +443,14 @@ const chkboxSmellIsactive=document.getElementById("chkboxSmellIsactive");
 
 
   document.getElementById("btnShowSetup").addEventListener("click",()=>{
+    
     const containersetup = document.getElementById("containersetup");
-
-    if (containersetup.style.display === "none") {
+    console.log(containersetup.style.display);
+    if (containersetup.style.display==="none" || containersetup.style.display==="") {
+        //alert("w1");
         containersetup.style.display = "block";
     } else {
+        //alert("w2");
         containersetup.style.display = "none";
     }
 })
