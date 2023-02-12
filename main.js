@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function(){
     if(value===null){
        document.getElementById("containerprivatebrowsing").style.display="block";
     }
-  
     
 
   
@@ -274,8 +273,8 @@ document.addEventListener("DOMContentLoaded", function(){
   function clearGame(){
      // localStorage.removeItem("game");
       localStorage.removeItem("game2");
-      localStorage.removeItem("players");
-      localStorage.removeItem("smells"); 
+      //localStorage.removeItem("players");
+      //localStorage.removeItem("smells"); 
       setPQ();     
   
       containerplayer.innerHTML="";
@@ -441,18 +440,30 @@ const chkboxSmellIsactive=document.getElementById("chkboxSmellIsactive");
 
 
 
-  document.getElementById("btnShowSetup").addEventListener("click",()=>{
-    
     const containersetup = document.getElementById("containersetup");
-    console.log(containersetup.style.display);
-    if (containersetup.style.display==="none" || containersetup.style.display==="") {
-        //alert("w1");
-        containersetup.style.display = "block";
-    } else {
-        //alert("w2");
+    const btnShowSetup=document.getElementById("btnShowSetup");
+    const setupmode=localStorage.getItem("setupmode")
+    if(setupmode===null){
         containersetup.style.display = "none";
+        btnShowSetup.innerText="Show Setup";
     }
-})
+    else {
+        containersetup.style.display = "block";
+        btnShowSetup.innerText="Hide Setup";
+    }
+
+
+    btnShowSetup.addEventListener("click",()=>{
+        if (containersetup.style.display==="none" || containersetup.style.display==="") {
+            containersetup.style.display = "block";
+            btnShowSetup.innerText="Hide Setup";
+           localStorage.setItem("setupmode",true);
+        } else {
+            localStorage.removeItem("setupmode");
+            containersetup.style.display = "none";
+            btnShowSetup.innerText="Show Setup";            
+        }
+    })
   
   document.getElementById("btnDisplayBrowserVersion").addEventListener("click",()=>{
       var v = "Version: " + navigator.userAgent;
