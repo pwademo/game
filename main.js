@@ -9,16 +9,9 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
     //try to read localstorage to se if the user is in "private browsing"
-    const value=localStorage.getItem("players")
-    if(value){
-         let _players= JSON.parse(value);
-         let numberOfPlayers=_players.length;
-         if(numberOfPlayers>0){
-            console.log("Players in localStorage:",value.length)
-         } else {
-            console.log("NO players is in localStorage");
-            document.getElementById("containerprivatebrowsing").style.display="block"
-        }
+    const value=localStorage.getItem("pq")
+    if(value===null){
+       document.getElementById("containerprivatebrowsing").style.display="block";
     }
   
     
@@ -271,13 +264,19 @@ document.addEventListener("DOMContentLoaded", function(){
   
   
   btnClearGame.addEventListener("click",clearGame)
+
+  function setPQ(){
+    localStorage.setItem("pq",JSON.stringify("pq"));
+  };
+
   
    /*Nulstiller localstorage for at starter et nyt spil*/
   function clearGame(){
      // localStorage.removeItem("game");
       localStorage.removeItem("game2");
       localStorage.removeItem("players");
-      localStorage.removeItem("smells");      
+      localStorage.removeItem("smells"); 
+      setPQ();     
   
       containerplayer.innerHTML="";
       containertotalscore.innerHTML="";
