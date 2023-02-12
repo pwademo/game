@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
     //try to read localstorage to se if user is in "private browsing"
-    const value=localStorage.getItem("game2")
+    const value=localStorage.getItem("players")
     if(value==null){
       document.getElementById("containerprivatebrowsing").style.display="block"
     }
@@ -44,6 +44,7 @@ document.addEventListener("DOMContentLoaded", function(){
   function setPlayers(players){
       localStorage.setItem("players",JSON.stringify(players));
   };
+
   function setSmells(smells){
       localStorage.setItem("smells",JSON.stringify(smells));
   };
@@ -144,7 +145,9 @@ document.addEventListener("DOMContentLoaded", function(){
       let trheader=document.createElement("TR");   
       let thleftuppercorner=document.createElement("TH")      
       trheader.appendChild(thleftuppercorner);
-      game2.forEach((item) =>{     
+
+      let _game=game2.filter((item)=>item.isactive && item.isactive==true);   
+      _game.forEach((item) =>{     
           const th=document.createElement("TH");
           th.append(item.name);                  
           trheader.appendChild(th);
@@ -162,7 +165,7 @@ document.addEventListener("DOMContentLoaded", function(){
           tdleft.append(player);
           tr.appendChild(tdleft);
           let points=0;    
-          game2.forEach((item) =>{     
+          _game.forEach((item) =>{     
               const td=document.createElement("TD");
               const usersguess=item.Guesses[index];
               if (usersguess!=-1){
