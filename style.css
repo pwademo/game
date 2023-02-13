@@ -15,8 +15,7 @@ body {
 
 
 #containersetup{
-    display: none;
-    z-index: 100;
+    display: none;   
 
 }
 
@@ -84,15 +83,33 @@ td {
  
     border-color: white;
 }
+
 span.green{
     color: green;
    
+    font-weight: bold;
 }
 
 span.red{
-    color: red;
+    color: red;    
+    font-weight: bold;
+}
+span.yellow{
+    /* color: rgb(230, 202, 64); */
+    color:black;
+    font-weight: bold;    
 }
 
+li{ margin-bottom: 5px;}
+
+li span {
+    width:150px;
+    display:inline-block;
+}
+li  button{
+    margin-right: 5px;
+
+}
 
 
 .container {            

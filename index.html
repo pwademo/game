@@ -19,8 +19,12 @@
 <div class="container" id="containerplayer" ></div>
 
 <!--Trykknapper til de forskellige lugte-->
-<div class="container" id="containersmells">
-    
+<div class="container" id="containersmells">    
+</div>
+<div class="container" id="containersmellguess">   
+    <label for="txtSmellguess">Hvad gætter du på?</label> 
+    <input id="txtSmellguess" type="text" placeholder="der er i glasser..." > 
+    <button id="btnSmellguess">Gæt</button>
 </div>
 
 <!--Tabel med total score-->
@@ -30,20 +34,11 @@
 <button id="btnClearGame">Clear Game</button> <button id="btnGetTotalScore">Get total score</button>
 
 <!--Debug så man ikke behøver scanne for at få en ny prøve-->
-<!-- <div class="container">
-    <p>Debug:</p>
-    <a href="./index.html">Home</a>
-    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx0">0</a>
-    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx1">1</a>
-    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx2">2</a>
-    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx3">3</a>
-    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx4">4</a>
-    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx5">5</a>
-    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx6">6</a>
-    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx7">7</a>
-    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx8">8</a>
-    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx9">9</a>    
-</div> -->
+<!--</div> --> <div class="container">
+    
+   
+
+
 <br/><br/><br/><br/><br/>
 <button id="btnDisplayBrowserVersion" style="display: none;">Return Browser version</button>
 
@@ -75,9 +70,20 @@
 
 
     </fieldset>
+
+
+    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx5xxxxx0xxx">5</a>
+    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx6xxxxx0xxx">6</a>  
+    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx7xxxxx0xxx">7</a>  
+    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx8xxxxx0xxx">8</a>  
+    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx9xxxxx0xxx">9</a>  
+    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx0xxxxx1xxx">10</a>  
 </div>
 
-
+<fieldset>
+    <legend>Game mode:</legend> 
+    <button id="btnToggelGamemode" ">Change game mode</button>  
+</fieldset>
 
 <div id="DisplayBrowserVersion" style="display: none;"></div>
 
