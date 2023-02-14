@@ -19,7 +19,12 @@ body {
 
 }
 
+#containertotalscore button.active{
 
+background-color: aqua;
+
+
+}
 #containerprivatebrowsing{
    /*  max-width: 180px; */
     position: absolute;
@@ -62,6 +67,9 @@ body {
 #containerplayer {
     font-size:    32px;
     font-weight: bolder;
+    background-color: chartreuse;
+    transition:background-color 1s ease-in-out;
+    padding:5px
 }
 
 table, th, td {

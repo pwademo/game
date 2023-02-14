@@ -5,6 +5,9 @@ let players;
 let smells;  
 let game2;
 
+
+
+
 document.addEventListener("DOMContentLoaded", function(){
 
 
@@ -36,6 +39,8 @@ document.addEventListener("DOMContentLoaded", function(){
    smells= getSmells();  
    game2=getGame2();
   
+
+
   
 /*   function setGame(game){
       localStorage.setItem("game",JSON.stringify(game));
@@ -133,7 +138,7 @@ document.addEventListener("DOMContentLoaded", function(){
       let txtSmellInGlass=getSmellNameById(smellid);
       let point=0;
       if(txtSmellguess.toLowerCase()===txtSmellInGlass.toLowerCase()){
-        point=1;
+        point=3;
       } 
      
       game2.find(field => field.id == smellid).Guesses[userid]=txtSmellguess;
@@ -147,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function(){
     let txtSmellInGlass=getSmellNameById(smellid);
     let point=0;
     if(txtSmellguess.toLowerCase()===txtSmellInGlass.toLowerCase()){
-      point=5;
+      point=3;
     } 
     game2.find(field => field.id == smellid).Guesses[userid]=txtSmellguess;   
     game2.find(field => field.id == smellid).Points[userid]=point;
@@ -158,7 +163,7 @@ document.addEventListener("DOMContentLoaded", function(){
 
   
   function getRound(gameround){  
-      console.log("ROUND",gameround);
+      //console.log("ROUND",gameround);
       let _round=game2.find(field => field.id == gameround);
       if(_round===undefined){
         addSmell(gameround);//hvis smell ikke er oprettet ved init 
@@ -166,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function(){
       
       if(_round){
         return _round.Guesses; 
-      }           
+      }       
 
       return 0;
   }
@@ -218,7 +223,7 @@ document.addEventListener("DOMContentLoaded", function(){
               let point=item.Points[index];
               if (usersguess!=-1){
                 
-                points=+point;
+                points+=point;
 /*                   if(item.name.toLowerCase()==usersguess.toLowerCase()){
                       points++;
                       td.setAttribute("class","green");
@@ -239,6 +244,7 @@ document.addEventListener("DOMContentLoaded", function(){
       table.appendChild(tbody); 
       fragment.appendChild(table);
       containerplayer.innerHTML="";
+    
       containerplayer.appendChild(fragment)
   }
   
@@ -260,7 +266,11 @@ document.addEventListener("DOMContentLoaded", function(){
       return name;
   }
   
-  
+  //function removing class active form siblings and set active om current element
+  const setActiveAndRemoveFromSiblings = el => {
+        [...el.parentElement.children].forEach(sibling => sibling.classList.remove('active'));
+        el.classList.add('active');
+    }
   
   function getRoundResult(id){
       containertotalscore.innerHTML="";
@@ -276,13 +286,25 @@ document.addEventListener("DOMContentLoaded", function(){
           li=document.createElement("LI");
           spanplayer=document.createElement("SPAN");
           spanplayerguess=document.createElement("SPAN"); 
-        if(rigtigtsvar.toLowerCase()==_round[index].toLowerCase()){
-            spanplayerguess.setAttribute("class","green");
 
+          let correctGuess=rigtigtsvar.toLowerCase()==_round[index].toLowerCase()?true:false;
+/*         if(rigtigtsvar.toLowerCase()==_round[index].toLowerCase()){
+            spanplayerguess.setAttribute("class","green");
           }
-          else {
+        else {
+            spanplayerguess.setAttribute("class","yellow");
+        }   */
+        if(correctGuess){
+            spanplayerguess.setAttribute("class","green");
+          }
+        else {
             spanplayerguess.setAttribute("class","yellow");
         }  
+
+        let tmpPoint=0;
+        if(correctGuess==true){
+            tmpPoint=3;
+        }
           
           spanplayer.append(`${players[index]}: `);
           console.log(_round[index]);
@@ -290,19 +312,22 @@ document.addEventListener("DOMContentLoaded", function(){
 
           li.append(spanplayer,spanplayerguess); 
 
-          
+          spanpointbuttons=document.createElement("SPAN"); 
           for (let p = 0; p <=3 ; p++) {
             const button = document.createElement("BUTTON");
             button.innerText=p;
-            button.addEventListener("click",()=>{
-                //give point
-               // console.log(button.innerText);
-                let userIndex=index;
-               givePoint(userIndex,id,parseInt(button.innerText));
-            })
-            li.appendChild(button);
-          }
+            if(tmpPoint==p){
+                button.classList.add("active");
+            }
+            button.addEventListener("click",(e)=>{
+                setActiveAndRemoveFromSiblings(e.target);
 
+                let userIndex=index;
+                givePoint(userIndex,id,parseInt(button.innerText));
+            })
+            spanpointbuttons.appendChild(button);
+          }
+          li.appendChild(spanpointbuttons);
           ul.appendChild(li) ;
           fragment.appendChild(ul);
        }
@@ -314,23 +339,36 @@ document.addEventListener("DOMContentLoaded", function(){
   
   /**/
   function setNextplayer(){            
+    containerplayer.style.backgroundColor="lightgray";
+
       let playersThisSmell=getRound(id);
+
       if(playersThisSmell){
-      nextplayerindex = playersThisSmell.findIndex(rank => rank === -1);
-      if(nextplayerindex==-1){
-          //Ikke flere spillere i denne runde - alle har afgivet et gæt på indholdet i glasset
-          containerplayer.innerText="Alle har givet deres gæt på dette glas";    
-          getRoundResult(id);
-          containersmells.innerHTML="";                
+        nextplayerindex = playersThisSmell.findIndex(rank => rank === -1);
+        
+        if(nextplayerindex==-1){
+            containerplayer.style.color="yellow";
+            //Ikke flere spillere i denne runde - alle har afgivet et gæt på indholdet i glasset
+            containerplayer.innerText="Alle har givet deres gæt på dette glas";    
+            getRoundResult(id);
+            containersmells.innerHTML="";                
+        }
+        else {
+           // containerplayer.style.backgroundColor="blue";
+            containerplayer.style.transition="color 5s  ease-in-out";
+            containerplayer.innerText=getPlayerNameById(nextplayerindex);                 
       }
-      else {
-          
-          containerplayer.innerText=getPlayerNameById(nextplayerindex);               
-      }
-    }
-  
+      
+    }  
   }
-  
+
+
+/*   if(nextplayerindex==-1){
+    //Ikke flere spillere i denne runde - alle har afgivet et gæt på indholdet i glasset
+  console.log("nextplayerindex",nextplayerindex)  
+    
+    containersmells.innerHTML="";                
+} */
   
   btnClearGame.addEventListener("click",clearGame)
 
@@ -360,6 +398,8 @@ document.addEventListener("DOMContentLoaded", function(){
   
   
   function drawContainerSmells(){
+
+   if(nextplayerindex ==-1) return;
       const fragment = document.createDocumentFragment(); 
       let _game=game2.filter((item)=>item.isactive && item.isactive==true);   
               
@@ -393,13 +433,7 @@ document.addEventListener("DOMContentLoaded", function(){
     setmovefreetext(nextplayerindex,id,txtSmellguess.value);
     txtSmellguess.value="";    //nulstil felt så det er klar til næste bruger
     setNextplayer();
-
   });
-   
-  
-
-
-
 
 
  // console.log("WWWWWWWWWWWWWWWWW",btnToggelGamemode);
@@ -414,7 +448,9 @@ document.addEventListener("DOMContentLoaded", function(){
   else {
       //containersetup.style.display = "block";
       btnToggelGamemode.innerText="Fritekst";
+      if(nextplayerindex!=-1){
       containersmellguess.style.display="block";
+      }
   }
 
 
@@ -430,8 +466,9 @@ document.addEventListener("DOMContentLoaded", function(){
       } else { 
         //så skift til fritekst
         containersmells.style.display="none";
+        if(nextplayerindex!=-1){
             containersmellguess.style.display="block";
-            
+            }
             
          
           btnToggelGamemode.innerText="Fritekst";            
