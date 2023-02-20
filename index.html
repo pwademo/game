@@ -9,7 +9,10 @@
 
  <link rel="stylesheet" href="style.css">
 <script src="./main.js" defer></script>
+<script src="./generatehslcolorbyname.js" defer></script>
 </head>
+<body>
+
 <div  id="containerprivatebrowsing" >
     Gå i Safari ved at trykke på safari-ikonet i øverste eller nederste højre hjørne.<br/>
     <img src="safaricompas.svg" width="30" alt="">
@@ -21,11 +24,7 @@
 <!--Trykknapper til de forskellige lugte-->
 <div class="container" id="containersmells">    
 </div>
-<div class="container" id="containersmellguess">   
-    <label for="txtSmellguess">Hvad gætter du på?</label> 
-    <input id="txtSmellguess" type="text" placeholder="der er i glasser..." > 
-    <button id="btnSmellguess">Gæt</button>
-</div>
+
 
 <!--Tabel med total score-->
 <div class="container" id="containertotalscore"></div>
@@ -43,7 +42,7 @@
 <button id="btnDisplayBrowserVersion" style="display: none;">Return Browser version</button>
 
 <p>
-    Game mode: <button id="btnToggelGamemode" ">Change game mode</button>  
+    Game mode: <button id="btnToggelGamemode" "> Change game mode</button>  
 </p>
 <p>
 Setup: <button id="btnShowSetup" ">Show Setup</button>
@@ -70,7 +69,6 @@ Setup: <button id="btnShowSetup" ">Show Setup</button>
         <p>
             <button id="btnSaveSmell" >Save</button>
         </p>
-
 
     </fieldset>
 

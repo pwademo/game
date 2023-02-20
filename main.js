@@ -1,52 +1,74 @@
-//Global variables
-let id=-1;
-let nextplayerindex=-1;
-let players;
-let smells;  
-let game2;
-
-
-
-
+//
 document.addEventListener("DOMContentLoaded", function(){
+    //Global variables
+    let id=-1;
+    let nextplayerindex=-1;
+    let players;
+    let smells;  
+    let game;
+    let gameMode;
+ 
+
+    //alert(gameMode);
+    let setupmode=localStorage.getItem("setupmode");
+
+    //references to UI elements
+    const containerplayer=document.getElementById("containerplayer");
+    const containertotalscore=document.getElementById("containertotalscore");
+    const containerplayers=document.getElementById("containerplayers");
+    const containersmellguess=document.getElementById("containersmellguess");  
+    const containersmells=document.getElementById("containersmells");     
+    const btnClearGame=document.getElementById("btnClearGame");
+    const btnGetTotalScore=document.getElementById("btnGetTotalScore");
+    const btnToggelGamemode=document.getElementById("btnToggelGamemode");
+    const containersetup = document.getElementById("containersetup");
+    const btnShowSetup=document.getElementById("btnShowSetup");
 
 
-    //try to read localstorage to se if the user is in "private browsing"
+
+
+    //check if local storage is empty.
+    //If it is empty, the game is not installed.
+    //When scanning QR in iOS, Safari will start in "private browsing" and 
+    //there will be no access to data saved in local storage in previous sessions
     const value=localStorage.getItem("pq")
     if(value===null){
        document.getElementById("containerprivatebrowsing").style.display="block";
-    }
-    
+    }   
 
   
   
-    
 
-  
-  
-  const containerplayer=document.getElementById("containerplayer");
-  const containertotalscore=document.getElementById("containertotalscore");
-  const containerplayers=document.getElementById("containerplayers");
-  const containersmellguess=document.getElementById("containersmellguess");
-  
-  const containersmells=document.getElementById("containersmells");     
-  const btnClearGame=document.getElementById("btnClearGame");
-  const btnGetTotalScore=document.getElementById("btnGetTotalScore");
 
-  const btnToggelGamemode=document.getElementById("btnToggelGamemode");
-  
+   gameMode=getGameMode();
    players=getPlayers();
    smells= getSmells();  
-   game2=getGame2();
-  
-
+   game=getGame();
 
   
-/*   function setGame(game){
+  function getGameMode(){
+    const value=localStorage.getItem("gamemode") || "Fritekst";     
+    return value;
+  }
+
+
+/*   function toggelGameMode(){
+    if(gameMode=="Knapper"){
+      //change gamemode to Fritext
+      gameMode="Fritekst";
+      localStorage.setItem("gamemode","Fritekst");
+
+    }
+    else {
+      //change gamemode to Knapper
+      gameMode="Knapper";
+      localStorage.setItem("gamemode","Knapper");
+    }
+    drawSmellButtons();
+  } */
+
+  function setGame(game){
       localStorage.setItem("game",JSON.stringify(game));
-  }; */
-  function setGame2(game2){
-      localStorage.setItem("game2",JSON.stringify(game2));
   };
   
   function setPlayers(players){
@@ -57,9 +79,9 @@ document.addEventListener("DOMContentLoaded", function(){
       localStorage.setItem("smells",JSON.stringify(smells));
   };
   
-  function getGame2(){
+  function getGame(){
       //get from localstorage or init new game if not exist
-      const value=localStorage.getItem("game2") || initGame2(smells,players);
+      const value=localStorage.getItem("game") || initGame(smells,players);
       //console.log(value);
       return JSON.parse(value);
   }
@@ -69,6 +91,8 @@ document.addEventListener("DOMContentLoaded", function(){
        const value=localStorage.getItem("players") || initPlayers();     
        return JSON.parse(value);
   }
+
+
   function getSmells(){
       const value=localStorage.getItem("smells") || initSmells();    
       return JSON.parse(value);
@@ -90,15 +114,15 @@ document.addEventListener("DOMContentLoaded", function(){
 
 
   
-  function initGame2(smells,players){
+  function initGame(smells,players){
       let _emptygame=[];
       smells.forEach((item=>{
            item.Guesses =Array.from({ length:players.length }, ()=> -1);
            item.Points =Array.from({ length:players.length }, ()=> -1);
            _emptygame.push(item);
       })) 
-      console.log("GAME2",_emptygame);
-      setGame2(_emptygame); 
+      console.log("GAME",_emptygame);
+      setGame(_emptygame); 
       return JSON.stringify(_emptygame);
   };
   
@@ -125,10 +149,10 @@ document.addEventListener("DOMContentLoaded", function(){
   }
   
   function givePoint(userid,smellid,point){
-    let round=game2.find(field => field.id == smellid)
+    let round=game.find(field => field.id == smellid)
     console.log(round);
     round.Points[userid]=point;
-    setGame2(game2);
+    setGame(game);
   }
 
   function setmove(userid,smellid, guessid){
@@ -141,10 +165,10 @@ document.addEventListener("DOMContentLoaded", function(){
         point=3;
       } 
      
-      game2.find(field => field.id == smellid).Guesses[userid]=txtSmellguess;
-      game2.find(field => field.id == smellid).Points[userid]=point;
+      game.find(field => field.id == smellid).Guesses[userid]=txtSmellguess;
+      game.find(field => field.id == smellid).Points[userid]=point;
 
-      setGame2(game2);
+      setGame(game);
   }
 
   function setmovefreetext(userid,smellid, txtSmellguess){    
@@ -154,17 +178,17 @@ document.addEventListener("DOMContentLoaded", function(){
     if(txtSmellguess.toLowerCase()===txtSmellInGlass.toLowerCase()){
       point=3;
     } 
-    game2.find(field => field.id == smellid).Guesses[userid]=txtSmellguess;   
-    game2.find(field => field.id == smellid).Points[userid]=point;
+    game.find(field => field.id == smellid).Guesses[userid]=txtSmellguess;   
+    game.find(field => field.id == smellid).Points[userid]=point;
     
-    setGame2(game2);
+    setGame(game);
   }   
 
 
   
   function getRound(gameround){  
       //console.log("ROUND",gameround);
-      let _round=game2.find(field => field.id == gameround);
+      let _round=game.find(field => field.id == gameround);
       if(_round===undefined){
         addSmell(gameround);//hvis smell ikke er oprettet ved init 
       }
@@ -188,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function(){
       let thleftuppercorner=document.createElement("TH")      
       trheader.appendChild(thleftuppercorner);
 
-      let _game=game2.filter(
+      let _game=game.filter(
         (item)=>
         item.isactive && 
         item.isactive==true &&
@@ -243,9 +267,10 @@ document.addEventListener("DOMContentLoaded", function(){
   
       table.appendChild(tbody); 
       fragment.appendChild(table);
-      containerplayer.innerHTML="";
+      containertotalscore.innerHTML="";
     
-      containerplayer.appendChild(fragment)
+      
+      containertotalscore.appendChild(fragment)
   }
   
   
@@ -275,7 +300,12 @@ document.addEventListener("DOMContentLoaded", function(){
   function getRoundResult(id){
       containertotalscore.innerHTML="";
   
-      var _round=getRound(id);//txt array med gæt i klar tekst.
+      let _round=getRound(id);//txt array med gæt i klar tekst.
+
+      let _round2=game.find(field => field.id == id);
+      let _points=_round2.Points;
+      
+
       const fragment = document.createDocumentFragment();
       div=document.createElement("DIV");
       let rigtigtsvar=getSmellNameById(id);
@@ -283,17 +313,16 @@ document.addEventListener("DOMContentLoaded", function(){
       fragment.appendChild(div);
       ul=document.createElement("UL");
        for (let index = 0; index < _round.length; index++) {
+        console.log("QQQQ",_round[index]);
+        console.log("QQQQ",game[id].Guesses[index],_round[index]);
+
+        console.log("PP",_points[index]);
           li=document.createElement("LI");
           spanplayer=document.createElement("SPAN");
           spanplayerguess=document.createElement("SPAN"); 
 
           let correctGuess=rigtigtsvar.toLowerCase()==_round[index].toLowerCase()?true:false;
-/*         if(rigtigtsvar.toLowerCase()==_round[index].toLowerCase()){
-            spanplayerguess.setAttribute("class","green");
-          }
-        else {
-            spanplayerguess.setAttribute("class","yellow");
-        }   */
+
         if(correctGuess){
             spanplayerguess.setAttribute("class","green");
           }
@@ -301,10 +330,14 @@ document.addEventListener("DOMContentLoaded", function(){
             spanplayerguess.setAttribute("class","yellow");
         }  
 
-        let tmpPoint=0;
-        if(correctGuess==true){
-            tmpPoint=3;
-        }
+
+          let tmpPoint=0;    
+
+          if(correctGuess==true){
+              tmpPoint=3;
+          }
+
+          tmpPoint=_points[index];
           
           spanplayer.append(`${players[index]}: `);
           console.log(_round[index]);
@@ -348,15 +381,15 @@ document.addEventListener("DOMContentLoaded", function(){
         
         if(nextplayerindex==-1){
             containerplayer.style.color="yellow";
-            //Ikke flere spillere i denne runde - alle har afgivet et gæt på indholdet i glasset
+            containerplayer.style.backgroundColor ="Black";
             containerplayer.innerText="Alle har givet deres gæt på dette glas";    
             getRoundResult(id);
             containersmells.innerHTML="";                
         }
         else {
-           // containerplayer.style.backgroundColor="blue";
-            containerplayer.style.transition="color 5s  ease-in-out";
-            containerplayer.innerText=getPlayerNameById(nextplayerindex);                 
+          let nextPlayerName=getPlayerNameById(nextplayerindex);
+            containerplayer.innerText=nextPlayerName;            
+            containerplayer.style.backgroundColor = generateHSLByName(nextPlayerName);  
       }
       
     }  
@@ -377,19 +410,12 @@ document.addEventListener("DOMContentLoaded", function(){
   };
 
   
-   /*Nulstiller localstorage for at starter et nyt spil*/
+   /*Nulstiller game i localstorage for at starter et nyt spil*/
   function clearGame(){
-     // localStorage.removeItem("game");
-      localStorage.removeItem("game2");
-      //localStorage.removeItem("players");
-      //localStorage.removeItem("smells"); 
-      setPQ();     
-  
-      containerplayer.innerHTML="";
-      containertotalscore.innerHTML="";
-      containersmells.innerHTML="";   
-      initGame2(smells,players)    
-      location.reload();
+      localStorage.removeItem("game");
+      setPQ(); 
+      initGame(smells,players)    
+      location.reload();//genindlæs siden
   }
   
   
@@ -397,15 +423,16 @@ document.addEventListener("DOMContentLoaded", function(){
   
   
   
-  function drawContainerSmells(){
-
+  function drawSmellButtons(){
+    containersmells.innerHTML="";
    if(nextplayerindex ==-1) return;
-      const fragment = document.createDocumentFragment(); 
-      let _game=game2.filter((item)=>item.isactive && item.isactive==true);   
+   const fragment = document.createDocumentFragment(); 
+
+   if(gameMode==="Knapper"){
+    
+       let _game=game.filter((item)=>item.isactive && item.isactive==true);   
               
-      _game.forEach((item) =>{         
-                  
-                 
+      _game.forEach((item) =>{                 
                   div=document.createElement("DIV");
                   div.setAttribute('data-id', item.id);
                   div.innerHTML=item.name ;
@@ -416,16 +443,39 @@ document.addEventListener("DOMContentLoaded", function(){
                       setNextplayer();
                   });
   
-                  fragment.appendChild(div);
-  
+                  fragment.appendChild(div);  
               } 
               );
               containersmells.innerHTML="";
-              containersmells.appendChild(fragment); 
+              containersmells.appendChild(fragment);
+               }
+   else {
+       let label= document.createElement("LABEL");
+       label.innerText="Hvad gætter du på?";
+       label.setAttribute("for","txtSmellguess");
+       let input=document.createElement("INPUT");
+       input.type="text";
+       input.id="txtSmellguess";
+       input.style.marginLeft=5;
+       input.style.marginRight=5;
+       let button= document.createElement("BUTTON");
+       button.innerText="Gæt";
+       button.id="btnSmellguess";
+       button.addEventListener("click",()=>{
+            let txtSmellguess=document.getElementById("txtSmellguess");        
+            setmovefreetext(nextplayerindex,id,txtSmellguess.value);
+            txtSmellguess.value="";    //nulstil felt så det er klar til næste bruger
+            setNextplayer();
+          });
+       fragment.append(label,input,button),
+       containersmells.appendChild(fragment);
+   }
   };
+  
 
+  drawSmellButtons();
 
-  document.getElementById("btnSmellguess").addEventListener("click",()=>{
+/*   document.getElementById("btnSmellguess").addEventListener("click",()=>{
     //det felt som brugeren selv kan skrive sit gæt i
     let txtSmellguess=document.getElementById("txtSmellguess");
     //alert(txtSmellguess);
@@ -433,46 +483,44 @@ document.addEventListener("DOMContentLoaded", function(){
     setmovefreetext(nextplayerindex,id,txtSmellguess.value);
     txtSmellguess.value="";    //nulstil felt så det er klar til næste bruger
     setNextplayer();
-  });
+  }); */
 
 
- // console.log("WWWWWWWWWWWWWWWWW",btnToggelGamemode);
-  const gameMode=localStorage.getItem("gamemode")
 
-  if(gameMode===null || gameMode==="Knapper"){
-      //containersetup.style.display = "none";
-      btnToggelGamemode.innerText="Knapper";//knapper er default
-      drawContainerSmells();
+
+
+/*   if(gameMode==="Knapper"){
+      btnToggelGamemode.innerText="Knapper";
+     drawSmellButtons();
       containersmellguess.style.display="none";
   }
   else {
       //containersetup.style.display = "block";
       btnToggelGamemode.innerText="Fritekst";
-      if(nextplayerindex!=-1){
-      containersmellguess.style.display="block";
+      //alert(nextplayerindex);
+      if(nextplayerindex=-1){
+        containersmellguess.style.display="none";
       }
-  }
+      else {
+        containersmellguess.style.display="block";
+      }
+  } */
 
 
    btnToggelGamemode.addEventListener("click",()=>{
-      if (btnToggelGamemode.innerText=="Fritekst") {
-        //så skift til knapper
-          drawContainerSmells();
-          containersmells.style.display="flex";
-          containersmellguess.style.display="none";
-          localStorage.setItem("gamemode","Knapper");
+    if(gameMode=="Knapper"){
+      //change gamemode to Fritext
+      gameMode="Fritekst";
+      localStorage.setItem("gamemode","Fritekst");
 
-          btnToggelGamemode.innerText="Knapper";
-      } else { 
-        //så skift til fritekst
-        containersmells.style.display="none";
-        if(nextplayerindex!=-1){
-            containersmellguess.style.display="block";
-            }
-            
-         
-          btnToggelGamemode.innerText="Fritekst";            
-      }
+    }
+    else {
+      //change gamemode to Knapper
+      gameMode="Knapper";
+      localStorage.setItem("gamemode","Knapper");
+    }
+    drawSmellButtons();
+
   }) 
 
 
@@ -489,7 +537,7 @@ document.addEventListener("DOMContentLoaded", function(){
   
   console.table(players);
   console.table(smells);
-  console.table("GAME:",game2);
+  console.table("GAME:",game);
   
   
 
@@ -498,7 +546,7 @@ document.addEventListener("DOMContentLoaded", function(){
     if (index !== -1) {
         players.splice(index, 1);
         setPlayers(players);
-        initGame2(smells,players) ;       
+        initGame(smells,players) ;       
         location.reload();
     } 
  }
@@ -506,7 +554,7 @@ document.addEventListener("DOMContentLoaded", function(){
  function addPlayer(playerName){
         players.push(playerName);
         setPlayers(players);//save to loalstorage
-        initGame2(smells,players);       
+        initGame(smells,players);       
         location.reload();
  } 
  
@@ -569,7 +617,7 @@ const chkboxSmellIsactive=document.getElementById("chkboxSmellIsactive");
 
         smells.push(newsmell);
         setSmells(smells);//save to loalstorage
-        initGame2(smells,players);       
+        initGame(smells,players);       
         location.reload();
     }
  }
@@ -580,7 +628,7 @@ const chkboxSmellIsactive=document.getElementById("chkboxSmellIsactive");
     smell.isactive=chkboxSmellIsactive.checked;
 
     setSmells(smells);//save to loalstorage
-    initGame2(smells,players);       
+    initGame(smells,players);       
     location.reload();
   }
 
@@ -597,13 +645,11 @@ const chkboxSmellIsactive=document.getElementById("chkboxSmellIsactive");
 
 
   
-  });
 
 
 
-    const containersetup = document.getElementById("containersetup");
-    const btnShowSetup=document.getElementById("btnShowSetup");
-    const setupmode=localStorage.getItem("setupmode")
+
+
     if(setupmode===null){
         containersetup.style.display = "none";
         btnShowSetup.innerText="Show Setup";
@@ -631,3 +677,4 @@ const chkboxSmellIsactive=document.getElementById("chkboxSmellIsactive");
       document.getElementById("DisplayBrowserVersion").innerHTML = v;
   })
   
+  });

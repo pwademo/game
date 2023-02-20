@@ -19,12 +19,14 @@ body {
 
 }
 
-#containertotalscore button.active{
-
-background-color: aqua;
-
-
+#containertotalscore {
+    /* border:solid red 1px; */
 }
+
+#containertotalscore button.active{
+    background-color: aqua;    
+}
+
 #containerprivatebrowsing{
    /*  max-width: 180px; */
     position: absolute;
@@ -43,7 +45,12 @@ background-color: aqua;
     font-size:16px;
     /* font-weight: bold; */
     min-height: 20px;
+  
 }       
+
+.container {
+    padding: 5px;  
+}      
 
 #containersmells {
     display: flex;  
@@ -67,10 +74,18 @@ background-color: aqua;
 #containerplayer {
     font-size:    32px;
     font-weight: bolder;
-    background-color: chartreuse;
-    transition:background-color 1s ease-in-out;
+    color: #ffffff;
+    /* background-color: chartreuse;
+    transition:background-color 1s ease-in-out; */
     padding:5px
 }
+
+#containerplayers button {
+    cursor: pointer;
+    margin-right: 3px;
+}
+
+
 
 table, th, td {
     border: 1px solid;
@@ -128,7 +143,7 @@ table {
     border-collapse: collapse;
     
     margin: 25px 0;
-    font-size: 0.4em;
+    font-size: 0.7em;
    /*  font-family: sans-serif; */
     min-width: 300px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
