@@ -15,7 +15,9 @@
 
 <div  id="containerprivatebrowsing" >
     Gå i Safari ved at trykke på safari-ikonet i øverste eller nederste højre hjørne.<br/>
-    <img src="safaricompas.svg" width="30" alt="">
+    <img src="safaricompas.svg" width="30" alt=""><br/>
+    <span id="screenwidth"></span><br/>
+    <span id="browsername"></span>
 </div>
 
 <!-- Hvem er næste player, er runden slut, er spillet slut -->
@@ -29,17 +31,17 @@
 <!--Tabel med total score-->
 <div class="container" id="containertotalscore"></div>
 
-<!--Reset spil og se total score-->
-<button id="btnClearGame">Clear Game</button> <button id="btnGetTotalScore">Get total score</button>
+
 
 <!--Debug så man ikke behøver scanne for at få en ny prøve-->
 <!--</div> --> <div class="container">
     
    
 
-
+ <button id="btnGetTotalScore">Get total score</button></p>
 <br/><br/><br/><br/><br/>
-<button id="btnDisplayBrowserVersion" style="display: none;">Return Browser version</button>
+<button id="btnDisplayBrowserVersion" style="display: block;">Return Browser version</button>
+<div></div>
 
 <p>
     Game mode: <button id="btnToggelGamemode" "> Change game mode</button>  
@@ -49,6 +51,10 @@ Setup: <button id="btnShowSetup" ">Show Setup</button>
 </p>
 
 <div id="containersetup">
+<!--Reset spil-->
+<p>
+
+
     <fieldset>
     <legend>Players:</legend> 
     <input type="text" name="txtPlayerName" id="txtPlayerName" placeholder="new player">
@@ -80,10 +86,10 @@ Setup: <button id="btnShowSetup" ">Show Setup</button>
     <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx9xxxxx0xxx">9</a>  
     <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx0xxxxx1xxx">10</a>  
 </div>
+<button id="btnClearGame">Clear Game</button>
 
 
-
-<div id="DisplayBrowserVersion" style="display: none;"></div>
+<div id="DisplayBrowserVersion" style="display: block;"></div>
 
 
 

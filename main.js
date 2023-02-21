@@ -8,6 +8,23 @@ document.addEventListener("DOMContentLoaded", function(){
     let game;
     let gameMode;
  
+    var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    var browserName = (function (agent) {
+      switch (true) {
+          case agent.indexOf("edge") > -1: return "MS Edge";
+          case agent.indexOf("edg/") > -1: return "Edge ( chromium based)";
+          case agent.indexOf("opr") > -1 && !!window.opr: return "Opera";
+          case agent.indexOf("chrome") > -1 && !!window.chrome: return "Chrome";
+          case agent.indexOf("trident") > -1: return "MS IE";
+          case agent.indexOf("firefox") > -1: return "Mozilla Firefox";
+          case agent.indexOf("safari") > -1: return "Safari";
+          default: return "other";
+      }
+      })(window.navigator.userAgent.toLowerCase());
+    
+    document.getElementById("screenwidth").innerText=width;
+    document.getElementById("browsername").innerText=browserName;
+
 
     //alert(gameMode);
     let setupmode=localStorage.getItem("setupmode");
@@ -33,8 +50,15 @@ document.addEventListener("DOMContentLoaded", function(){
     //there will be no access to data saved in local storage in previous sessions
     const value=localStorage.getItem("pq")
     if(value===null){
-       document.getElementById("containerprivatebrowsing").style.display="block";
+      
+
+        document.getElementById("containerprivatebrowsing").style.display="block";
+        btnClearGame.classList.add("scannermode");
+      
     }   
+    else {
+      btnClearGame.classList.remove("scannermode");
+    }
 
   
   
@@ -673,8 +697,15 @@ const chkboxSmellIsactive=document.getElementById("chkboxSmellIsactive");
     })
   
   document.getElementById("btnDisplayBrowserVersion").addEventListener("click",()=>{
+      console.log(navigator);
       var v = "Version: " + navigator.userAgent;
       document.getElementById("DisplayBrowserVersion").innerHTML = v;
   })
   
+
+
+
+
+
+
   });
