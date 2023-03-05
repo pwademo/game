@@ -1,4 +1,4 @@
-//
+//:
 document.addEventListener("DOMContentLoaded", function(){
     //Global variables
     let id=-1;
@@ -610,8 +610,9 @@ function drawContainerPlayers(){
             containerplayers.appendChild(fragment); 
 };
 
-
+        const spanId=document.getElementById("spanId");
 const inputSmell=document.getElementById("inputSmell");
+
 const chkboxSmellIsactive=document.getElementById("chkboxSmellIsactive");
 
 
@@ -622,6 +623,9 @@ const chkboxSmellIsactive=document.getElementById("chkboxSmellIsactive");
     }
 
     if(_smell){
+        
+
+        spanId.innerHTML=id;
         inputSmell.value=_smell.name;
         chkboxSmellIsactive.checked=_smell.isactive;
     }
