@@ -129,7 +129,39 @@ document.addEventListener("DOMContentLoaded", function(){
   }
   
   function initSmells(){
-      const defaultsmells=[{id:0,name:"Hindbær",isactive:true},{id:1,name:"Lime",isactive:true},{id:2,name:"Timian",isactive:true},{id:3,name:"Eddike",isactive:true},{id:4,name:"Karry",isactive:true},{id:5,name:"Karamel",isactive:true},{id:6,name:"Ananas",isactive:true},{id:7,name:"Pepermynte",isactive:true},{id:8,name:"Kamille",isactive:true},{id:9,name:"Kirsebær",isactive:true},{id:10,name:"Abrikos",isactive:true},{id:11,name:"Melon",isactive:true},{id:12,name:"Appelsin",isactive:true},{id:13,name:"Koriander",isactive:true},{id:14,name:"Spidskommen",isactive:true},{id:15,name:"Kaffe",isactive:true},{id:16,name:"Kanel",isactive:true},{id:17,name:"Mandel",isactive:true},{id:18,name:"Vanilje",isactive:true},{id:19,name:"Rom",isactive:true}];
+      const defaultsmells=[
+        {id:0,name:"Hindbær",isactive:true},
+        {id:1,name:"Lime",isactive:true},
+        {id:2,name:"Timian",isactive:true},
+        {id:3,name:"Eddike",isactive:true},
+        {id:4,name:"Karry",isactive:true},
+        {id:5,name:"Karamel",isactive:true},
+        {id:6,name:"Ananas",isactive:true},
+        {id:7,name:"Pepermynte",isactive:true},
+        {id:8,name:"Kamille",isactive:true},
+        {id:9,name:"Kirsebær",isactive:true},
+        {id:10,name:"Abrikos",isactive:true},
+        {id:11,name:"Melon",isactive:true},
+        {id:12,name:"Appelsin",isactive:true},
+        {id:13,name:"Koriander",isactive:true},
+        {id:14,name:"Spidskommen",isactive:true},
+        {id:15,name:"Kaffe",isactive:true},
+        {id:16,name:"Kanel",isactive:true},
+        {id:17,name:"Mandel",isactive:true},
+        {id:18,name:"Vanilje",isactive:true},
+        {id:19,name:"Rom",isactive:true},
+        {id:20,name:"Rosmarin",isactive:true},
+        {id:21,name:"Muskat",isactive:true},
+        {id:22,name:"Ingefærd",isactive:true},
+        {id:23,name:"Cayenne",isactive:true},
+        {id:24,name:"Anis",isactive:true},
+        {id:25,name:"Banan",isactive:true},
+        {id:26,name:"Kokos",isactive:true},
+        {id:27,name:"Peanuts",isactive:true},
+        {id:28,name:"Mandarin",isactive:true},
+        {id:29,name:"Jordbær",isactive:true}
+      ];
+
       const shuffledSmellArray = defaultsmells.sort((a, b) => 0.5 - Math.random());
       setSmells(shuffledSmellArray);
       return JSON.stringify(shuffledSmellArray);
