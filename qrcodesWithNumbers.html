@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR codes</title>
+</head>
+<body>
+
+<head>
+<script src="./js/qrcode.min.js"></script>
+<style>
+
+    #container {
+        display: flex;
+        row-gap: 0px;       
+        flex-wrap: wrap;
+        padding:1px;
+      /*   border: solid black 1px; */
+      border:solid 1px lightgray;
+    }
+
+    #container div {
+        border: solid white 1px;
+        padding:3px;      
+        margin-right: 1px;     
+            
+        margin-top: 1px;    
+        display:inline-flex; 
+        border:solid 0.005rem lightgray;
+        /* border-radius: 3px; */
+
+
+    }
+</style>
+<title>QR codes</title>
+</head>
+
+<div id="container"></div>
+
+<script>
+
+let container=document.getElementById("container");
+const fragment = document.createDocumentFragment();
+
+for (let index = 0; index < 30; index++) {
+    
+   
+    let number0=0;
+    let number1=index.toString()[0];
+    if(index>=10){
+     number0=index.toString()[0];
+     number1=index.toString()[1];
+    }
+
+    console.log("NUM0",number0);
+    console.log("NUM1",number1);
+
+    let q=document.createElement("DIV");
+    const stringtot=`${number0}${number1}`;
+
+    console.log(stringtot);    
+
+/**/     
+        new QRCode(q, {
+            text: `${stringtot}`,
+            width: 60,
+            height: 60,
+            colorDark : "black",
+            colorLight : "white",
+            correctLevel : QRCode.CorrectLevel.H
+            
+        });   
+
+
+
+    fragment.appendChild(q);
+}
+
+container.appendChild(fragment);
+
+</script>
+  
+</body>
+</html>

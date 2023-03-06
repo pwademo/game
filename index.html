@@ -8,11 +8,75 @@
     <title>Game</title>
 
  <link rel="stylesheet" href="style.css">
+
+<!-- <script src="./qrscanner.js" defer></script> -->
+<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
 <script src="./main.js" defer></script>
+
 <script src="./generatehslcolorbyname.js" defer></script>
+
+
+
+<style>
+  
+    #wrapper {
+      font-family:Arial, Helvetica, sans-serif;
+      color: #333;
+      max-width: 250px;
+      margin: 0 auto;
+      position: relative;
+      padding:5px;
+      border:solid gray 1px
+    } 
+
+
+    #loadingMessage {
+      max-width: 250px;
+      text-align: center;
+      padding: 30px;
+      background-color: #eee;
+    }
+
+    #canvas {
+      max-width: 250px;
+      max-height: 250px;
+      width: 100%;     
+      height: 100%;
+    }
+
+    #output {
+      margin-top: 20px;
+      background: #eee;
+      padding: 10px;
+      padding-bottom: 0;
+    }
+
+    #output div {
+      padding-bottom: 10px;
+      word-wrap: break-word;
+    }
+
+    #noQRFound {
+      text-align: center;
+    }
+  </style>
+
+
 </head>
 <body>
-
+    <div id="wrapper">
+        <div id="loadingMessage" hidden>🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
+      
+        <canvas id="canvas" hidden></canvas>
+      
+        <div id="output" hidden>
+          <div id="outputMessage">No QR code detected.</div>
+          <div hidden><b>Data:</b> <span id="outputData"></span></div>
+        </div>
+          <br/>
+         <button id="scanstart">Scan start</button>
+         <button id="scanstop" hidden>Scan stop</button>
+      </div>
 <div  id="containerprivatebrowsing" >
     Gå i Safari ved at trykke på safari-ikonet i øverste eller nederste højre hjørne.<br/>
     <img src="safaricompas.svg" width="30" alt=""><br/>
