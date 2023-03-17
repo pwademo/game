@@ -124,6 +124,10 @@ function startScanner(){
 
 scanstart.addEventListener("click",(e)=>{
       e.preventDefault();
+
+
+      //hide result
+      containertotalscore.innerHTML="";
       startScanner();
 });
 
