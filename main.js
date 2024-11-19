@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function(){
     let players;
     let smells;  
     let game;
-    let gameMode;
+    
  
 
 /* #region scanner */
@@ -81,7 +81,7 @@ function tick() {
         getSmellForEdit();
 
 
-      stopStreamedVideo(video);
+      stopStreamedVideo(video);//der er fundet en QR kode og derfor stoppes video
 
     } else {
       drawRect("red")
@@ -89,7 +89,7 @@ function tick() {
       outputData.parentElement.hidden = true;         
     }
   }
-  requestAnimationFrame(tick);
+  requestAnimationFrame(tick);//Enten er der ikke ENOUGH_DATA eller også er der ikke fundet en QR kode. Så vi prøver med en ny frame!
 }
 
 
@@ -164,7 +164,7 @@ scanstop.addEventListener("click",(e)=>{
     document.getElementById("browsername").innerText=browserName;
 
 
-    //alert(gameMode);
+   
     let setupmode=localStorage.getItem("setupmode");
 
     //references to UI elements
@@ -175,7 +175,7 @@ scanstop.addEventListener("click",(e)=>{
     const containersmells=document.getElementById("containersmells");     
     const btnClearGame=document.getElementById("btnClearGame");
     const btnGetTotalScore=document.getElementById("btnGetTotalScore");
-    const btnToggelGamemode=document.getElementById("btnToggelGamemode");
+
     const containersetup = document.getElementById("containersetup");
     const btnShowSetup=document.getElementById("btnShowSetup");
 
@@ -202,16 +202,13 @@ scanstop.addEventListener("click",(e)=>{
   
 
 
-   gameMode=getGameMode();
+
    players=getPlayers();
    smells= getSmells();  
    game=getGame();
 
   
-  function getGameMode(){
-    const value=localStorage.getItem("gamemode") || "Fritekst";     
-    return value;
-  }
+
 
 
 
@@ -253,6 +250,8 @@ scanstop.addEventListener("click",(e)=>{
       return JSON.stringify(defaultplayers);
   }
   
+
+
   function initSmells(){
       const defaultsmells=[
         {id:0,name:"Hindbær",isactive:true},
@@ -318,7 +317,7 @@ scanstop.addEventListener("click",(e)=>{
   /* Hente parmetre fra querystring*/
   const params = new URLSearchParams(window.location.search.substr(1));
   
-  /*henter specifik parametren id fra querystring. Betåre af en række ubrugte værdier for at sløre id på glasset.*/
+  /*henter specifik parametren id fra querystring. Består af en række ubrugte værdier for at sløre id på glasset.*/
   const idstring=params.get("id");
 
        
@@ -343,7 +342,7 @@ scanstop.addEventListener("click",(e)=>{
       let txtSmellInGlass=getSmellNameById(smellid);
       let point=0;
       if(txtSmellguess.toLowerCase()===txtSmellInGlass.toLowerCase()){
-        point=3;
+        point=1;
       } 
      
       game.find(field => field.id == smellid).Guesses[userid]=txtSmellguess;
@@ -357,7 +356,7 @@ scanstop.addEventListener("click",(e)=>{
     let txtSmellInGlass=getSmellNameById(smellid);
     let point=0;
     if(txtSmellguess.toLowerCase()===txtSmellInGlass.toLowerCase()){
-      point=3;
+      point=1;
     } 
     game.find(field => field.id == smellid).Guesses[userid]=txtSmellguess;   
     game.find(field => field.id == smellid).Points[userid]=point;
@@ -429,14 +428,16 @@ scanstop.addEventListener("click",(e)=>{
               if (usersguess!=-1){
                 
                 points+=point;
-/*                   if(item.name.toLowerCase()==usersguess.toLowerCase()){
-                      points++;
+
+/* */           if(item.name.toLowerCase()==usersguess.toLowerCase()){
+                      //points++;
                       td.setAttribute("class","green");
                   } else {
                       td.setAttribute("class","yellow");
-                  }        */         
+                  }                 
               }
-              td.append(`${usersguess} (${point})`);   
+              //td.append(`${usersguess} (${point})`);   
+              td.append(`${usersguess}`);   
               tr.appendChild(td);
           });
   
@@ -515,7 +516,7 @@ scanstop.addEventListener("click",(e)=>{
           let tmpPoint=0;    
 
           if(correctGuess==true){
-              tmpPoint=3;
+              tmpPoint=1;
           }
 
           tmpPoint=_points[index];
@@ -525,7 +526,7 @@ scanstop.addEventListener("click",(e)=>{
           spanplayerguess.append(_round[index]);
 
           li.append(spanplayer,spanplayerguess); 
-
+/*
           spanpointbuttons=document.createElement("SPAN"); 
           for (let p = 0; p <=3 ; p++) {
             const button = document.createElement("BUTTON");
@@ -542,6 +543,7 @@ scanstop.addEventListener("click",(e)=>{
             spanpointbuttons.appendChild(button);
           }
           li.appendChild(spanpointbuttons);
+          */
           ul.appendChild(li) ;
           fragment.appendChild(ul);
        }
@@ -568,9 +570,16 @@ scanstop.addEventListener("click",(e)=>{
             containersmells.innerHTML="";                
         }
         else {
-          let nextPlayerName=getPlayerNameById(nextplayerindex);
+          //alert("Næste spiller");
+          containerplayer.innerText="Næste spiller";
+          setTimeout(() => { 
+            let nextPlayerName=getPlayerNameById(nextplayerindex);
             containerplayer.innerText=nextPlayerName;            
             containerplayer.style.backgroundColor = generateHSLByName(nextPlayerName);  
+
+
+          }, 2000);
+
       }
       
     }  
@@ -609,13 +618,12 @@ scanstop.addEventListener("click",(e)=>{
    if(nextplayerindex ==-1) return;
    const fragment = document.createDocumentFragment(); 
 
-   if(gameMode==="Knapper"){
+
     
        let _game0=game.filter((item)=>item.isactive && item.isactive==true);   
 
        let _game=_game0.sort((a, b) => 0.5 - Math.random());//Shuffel - så brugerne ikke behøver skjule hvor på iPad de trykker
-       //console.log(_game);
-      // alert("q");
+
 
 
       // const shuffledSmellArray = defaultsmells.sort((a, b) => 0.5 - Math.random());
@@ -637,81 +645,17 @@ scanstop.addEventListener("click",(e)=>{
               );
               containersmells.innerHTML="";
               containersmells.appendChild(fragment);
-               }
-   else {
-       let label= document.createElement("LABEL");
-       label.innerText="Hvad gætter du på?";
-       label.setAttribute("for","txtSmellguess");
-       let input=document.createElement("INPUT");
-       input.type="text";
-       input.id="txtSmellguess";
-       input.style.marginLeft=5;
-       input.style.marginRight=5;
-       let button= document.createElement("BUTTON");
-       button.innerText="Gæt";
-       button.id="btnSmellguess";
-       button.addEventListener("click",()=>{
-            let txtSmellguess=document.getElementById("txtSmellguess");        
-            setmovefreetext(nextplayerindex,id,txtSmellguess.value);
-            txtSmellguess.value="";    //nulstil felt så det er klar til næste bruger
-            setNextplayer();            
-            drawSmellButtons();
-          });
-       fragment.append(label,input,button),
-       containersmells.appendChild(fragment);
-   }
+               
+   
   };
   
 
   drawSmellButtons();
 
-/*   document.getElementById("btnSmellguess").addEventListener("click",()=>{
-    //det felt som brugeren selv kan skrive sit gæt i
-    let txtSmellguess=document.getElementById("txtSmellguess");
-    //alert(txtSmellguess);
-    
-    setmovefreetext(nextplayerindex,id,txtSmellguess.value);
-    txtSmellguess.value="";    //nulstil felt så det er klar til næste bruger
-    setNextplayer();
-  }); */
 
 
 
 
-
-/*   if(gameMode==="Knapper"){
-      btnToggelGamemode.innerText="Knapper";
-     drawSmellButtons();
-      containersmellguess.style.display="none";
-  }
-  else {
-      //containersetup.style.display = "block";
-      btnToggelGamemode.innerText="Fritekst";
-      //alert(nextplayerindex);
-      if(nextplayerindex=-1){
-        containersmellguess.style.display="none";
-      }
-      else {
-        containersmellguess.style.display="block";
-      }
-  } */
-
-
-   btnToggelGamemode.addEventListener("click",()=>{
-    if(gameMode=="Knapper"){
-      //change gamemode to Fritext
-      gameMode="Fritekst";
-      localStorage.setItem("gamemode","Fritekst");
-
-    }
-    else {
-      //change gamemode to Knapper
-      gameMode="Knapper";
-      localStorage.setItem("gamemode","Knapper");
-    }
-    drawSmellButtons();
-
-  }) 
 
 
 
