@@ -702,6 +702,10 @@ function drawContainerPlayers(){
     players.forEach((item) =>{                               
                 div=document.createElement("DIV"); 
                 deletebutton=document.createElement("BUTTON");
+                
+                deletebutton.classList.add("btn");
+                deletebutton.classList.add("btn-secondary");
+                deletebutton.classList.add("btn-sm");
                 deletebutton.innerText="x"; 
                 div.appendChild(deletebutton);
 

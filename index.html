@@ -8,6 +8,8 @@
     <title>Game</title>
 
  <link rel="stylesheet" href="style.css">
+ <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 <!-- <script src="./qrscanner.js" defer></script> -->
 <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
@@ -74,8 +76,8 @@
           <div hidden><b>Data:</b> <span id="outputData"></span></div>
         </div>
           <br/>
-         <button id="scanstart">Scan start</button>
-         <button id="scanstop" hidden>Scan stop</button>
+         <button id="scanstart"  class="btn btn-primary">Scan start</button>
+         <button id="scanstop"  class="btn btn-secondary" hidden>Scan stop</button>
       </div>
 <div  id="containerprivatebrowsing" >
     Gå i Safari ved at trykke på safari-ikonet i øverste eller nederste højre hjørne.<br/>
@@ -102,7 +104,7 @@
     
    
 
- <button id="btnGetTotalScore">Get total score</button></p>
+ <button class="btn btn-primary" id="btnGetTotalScore">Get total score</button></p>
 <br/><br/>
 
 <button id="btnDisplayBrowserVersion" style="display: none;">Return Browser version</button>
@@ -114,7 +116,7 @@
 <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
 <p>
-Setup: <button id="btnShowSetup" ">Show Setup</button>
+Setup: <button id="btnShowSetup"  class="btn btn-secondary">Show Setup</button>
 </p>
 
 <div id="containersetup">
@@ -124,10 +126,18 @@ Setup: <button id="btnShowSetup" ">Show Setup</button>
 
     <fieldset>
     <legend>Players:</legend> 
-    <input type="text" name="txtPlayerName" id="txtPlayerName" placeholder="new player">
-    <button id="btnAddPlayer" >Add</button>
+
+    <form class="row g-3">
+      <div class="col-auto">
+        <input type="text" name="txtPlayerName" id="txtPlayerName" placeholder="new player"  class="form-control">
+      </div>
+      <div class="col-auto">
+        <button id="btnAddPlayer"  class="btn btn-secondary">Add</button>
+      </div>
+      </form>
     <div class="container" id="containerplayers">
-        
+    </div>
+    </div>
     </div>
     </fieldset>
 
@@ -143,7 +153,7 @@ Setup: <button id="btnShowSetup" ">Show Setup</button>
             <input type="checkbox" id="chkboxSmellIsactive" ><label for="chkboxSmellIsactive">Is active</label> 
         </p>
         <p>
-            <button id="btnSaveSmell" >Save</button>
+            <button id="btnSaveSmell"  class="btn btn-secondary">Save</button>
         </p>
 
     </fieldset>
@@ -156,7 +166,7 @@ Setup: <button id="btnShowSetup" ">Show Setup</button>
     <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx9xxxxx0xxx">9</a>  
     <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx0xxxxx1xxx">10</a>  
 </div>
-<button id="btnClearGame">Clear Game</button>
+<button id="btnClearGame"  class="btn btn-danger">Clear Game</button>
 
 
 <div id="DisplayBrowserVersion" style="display: block;"></div>
