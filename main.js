@@ -39,7 +39,37 @@ function drawRect(color) {
 }
 
 
-function tick() {      
+function resolveAfter2Seconds(x) {
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve(x);
+    }, 100);
+  });
+}
+
+/*Wrap jsQR in promise make it posible to run as async/await */
+var jsQRpromise = function (myimg) {
+  return new Promise(function (resolve) {
+
+
+    var code = jsQR(myimg.data, myimg.width, myimg.height, {
+      inversionAttempts: "dontInvert", 
+    });
+
+    if(code){
+      console.log("Found QR");
+      console.log(code.data);
+    }
+
+    resolve(code);
+
+
+  });
+};
+
+
+//function tick() {      
+  const tick = async () => {
   loadingMessage.innerText = "⌛ Loading video..."
   if (video.readyState === video.HAVE_ENOUGH_DATA) {
     loadingMessage.hidden = true;
@@ -49,16 +79,22 @@ function tick() {
     canvasElement.height = video.videoHeight;
     canvasElement.width = video.videoWidth;
 
-    canvas.drawImage(video, 0, 0, canvasElement.width*1, canvasElement.height*1);
-    canvas.drawImage(video, 0, 0, canvasElement.width*1.5, canvasElement.height*1.5);
+    //video-frame tegnes som billede på canvas 
+   canvas.drawImage(video, 0, 0, canvasElement.width*1, canvasElement.height*1);
+    //canvas.drawImage(video, 0, 0, canvasElement.width*1.5, canvasElement.height*1.5);
 
     var imageData = canvas.getImageData(canvasElement.width/4, canvasElement.height/4, canvasElement.width/2, canvasElement.height/2);
-    //var imageData = canvas.getImageData(0, 0, canvasElement.width, canvasElement.height);
-    var code = jsQR(imageData.data, imageData.width, imageData.height, {
-      inversionAttempts: "dontInvert", 
-    });
+
+
+    let code=await jsQRpromise(imageData);
+
+
+    //var code = jsQR(imageData.data, imageData.width, imageData.height, {
+      //inversionAttempts: "dontInvert", 
+    //});
 
     if (code) {
+       console.log(imageData);
 
 /*        drawLine(code.location.topLeftCorner, code.location.topRightCorner, "#FF3B58");
       drawLine(code.location.topRightCorner, code.location.bottomRightCorner, "#FF3B58");
@@ -265,15 +301,15 @@ scanstop.addEventListener("click",(e)=>{
         {id:8,name:"Kamille",isactive:true},
         {id:9,name:"Kirsebær",isactive:true},
         {id:10,name:"Abrikos",isactive:true},
-        {id:11,name:"Melon",isactive:true},
-        {id:12,name:"Appelsin",isactive:true},
+        {id:11,name:"Kardemomme",isactive:true},
+        {id:12,name:"Allehånde",isactive:true},
         {id:13,name:"Koriander",isactive:true},
         {id:14,name:"Spidskommen",isactive:true},
         {id:15,name:"Kaffe",isactive:true},
         {id:16,name:"Kanel",isactive:true},
         {id:17,name:"Mandel",isactive:true},
         {id:18,name:"Vanilje",isactive:true},
-        {id:19,name:"Rom",isactive:true},
+        {id:19,name:"Nellike",isactive:true},
         {id:20,name:"Rosmarin",isactive:true},
         {id:21,name:"Muskat",isactive:true},
         {id:22,name:"Ingefærd",isactive:true},
