@@ -1,180 +1,186 @@
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="robots" content="noindex">
-    
-    <title>Game</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
 
- <link rel="stylesheet" href="style.css">
- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-
-<!-- <script src="./qrscanner.js" defer></script> -->
-<script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
-<script src="./main.js" defer></script>
-
-<script src="./generatehslcolorbyname.js" defer></script>
+  <title>Smell and Guess</title>
 
 
 
-<style>
-  
-    #wrapper {
-      font-family:Arial, Helvetica, sans-serif;
-      color: #333;
-      max-width: 250px;
-      margin: 0 auto;
-      position: relative;
-      padding:5px;
-      border:solid gray 1px
-    } 
+  <!--Bootstrap-->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+
+  <!-- <script src="./qrscanner.js" defer></script> -->
+  <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js"></script>
+
+  <script src="./generatehslcolorbyname.js" defer></script>
+
+  <script src="./main.js" defer></script>
+  <link rel="stylesheet" href="style.css">
 
 
-    #loadingMessage {
-      max-width: 250px;
-      text-align: center;
-      padding: 30px;
-      background-color: #eee;
-    }
 
-    #canvas {
-      max-width: 250px;
-      max-height: 250px;
-      width: 100%;     
-      height: 100%;
-    }
+  <style>
 
-    #output {
-      margin-top: 20px;
-      background: #eee;
-      padding: 10px;
-      padding-bottom: 0;
-    }
-
-    #output div {
-      padding-bottom: 10px;
-      word-wrap: break-word;
-    }
-
-    #noQRFound {
-      text-align: center;
-    }
   </style>
 
 
 </head>
+
 <body>
-    <div id="wrapper">
-        <div id="loadingMessage" hidden>🎥 Unable to access video stream (please make sure you have a webcam enabled)</div>
-      
+
+  <div class="container-lg">
+    <div class="row">
+      <div class="col-md-12">
+        <div id="loadingMessage" hidden>🎥 Unable to access video stream (please make sure you have a webcam enabled)
+        </div>
         <canvas id="canvas" hidden></canvas>
-      
-        <div id="output" hidden>
-          <div id="outputMessage">No QR code detected.</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 ">
+        <div class="mt-2">
+          <button id="scanstart" class="btn btn-primary">Scan start</button>
+          <button id="scanstop" class="btn btn-secondary" hidden>Scan stop</button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div id="output" hidden class="mt-2">
+           <div id="outputMessage"></div> 
           <div hidden><b>Data:</b> <span id="outputData"></span></div>
         </div>
-          <br/>
-         <button id="scanstart"  class="btn btn-primary">Scan start</button>
-         <button id="scanstop"  class="btn btn-secondary" hidden>Scan stop</button>
       </div>
-<div  id="containerprivatebrowsing" >
-    Gå i Safari ved at trykke på safari-ikonet i øverste eller nederste højre hjørne.<br/>
-    <img src="safaricompas.svg" width="30" alt=""><br/>
-    <span id="screenwidth"></span><br/>
-    <span id="browsername"></span>
-</div>
-
-<!-- Hvem er næste player, er runden slut, er spillet slut -->
-<div class="container" id="containerplayer" ></div>
-
-<!--Trykknapper til de forskellige lugte-->
-<div class="container" id="containersmells">    
-</div>
-
-
-<!--Tabel med total score-->
-<div class="container" id="containertotalscore"></div>
-
-
-
-<!--Debug så man ikke behøver scanne for at få en ny prøve-->
-<!--</div> --> <div class="container">
-    
-   
-
- <button class="btn btn-primary" id="btnGetTotalScore">Get total score</button></p>
-<br/><br/>
-
-<button id="btnDisplayBrowserVersion" style="display: none;">Return Browser version</button>
-<div></div>
-
-
-
-
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-
-<p>
-Setup: <button id="btnShowSetup"  class="btn btn-secondary">Show Setup</button>
-</p>
-
-<div id="containersetup">
-<!--Reset spil-->
-<p>
-
-
-    <fieldset>
-    <legend>Players:</legend> 
-
-    <form class="row g-3">
-      <div class="col-auto">
-        <input type="text" name="txtPlayerName" id="txtPlayerName" placeholder="new player"  class="form-control">
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <!-- Hvem er næste player, er runden slut, er spillet slut -->
+        <div id="containerplayer"></div>
       </div>
-      <div class="col-auto">
-        <button id="btnAddPlayer"  class="btn btn-secondary">Add</button>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <!--Trykknapper til de forskellige lugte-->
+        <div id="containersmells" class="mt-2">
+        </div>
       </div>
-      </form>
-    <div class="container" id="containerplayers">
     </div>
+
+
+
+    <div class="row">
+      <div class="col-md-12 mt-3">
+
+        <!--Tabel med total score-->
+        <div id="containertotalscore" class="table-responsive mt-2"></div>
+
+
+        <button class="btn btn-primary" id="btnGetTotalScore">Get total score</button>
+
+      </div>
     </div>
+
+
+    <div class="row" style="margin-top:500px">
+      <div class="col-md-12"  >
+        <!---->
+        <button id="btnShowSetup" class="btn btn-secondary">Show Setup</button>
+      </div>
     </div>
-    </fieldset>
 
-    <fieldset>
-        <legend>Smell:</legend> 
-        <p>
-            <span id="spanId" style="font-size: xx-small;"></span>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div id="containersetup">
+
+          <!--Reset spil-->
+          <p>
+          <fieldset>
+            <legend>Players:</legend>
+
+            <form class="row">
+              <div class="col-auto">
+                <input type="text" name="txtPlayerName" id="txtPlayerName" placeholder="new player"
+                  class="form-control">
+              </div>
+              <div class="col-auto">
+                <button id="btnAddPlayer" class="btn btn-secondary">Add</button>
+              </div>
+            </form>
+            <div class="container" id="containerplayers">
+            </div>
+
+          </fieldset>
+
+          <fieldset>
+            <legend>Smell:</legend>
+            <p>
+              <span id="spanId" style="font-size: xx-small;"></span>
+            </p>
+            <p>
+              <input id="inputSmell" type="text" name="" placeholder="">
+            </p>
+            <p>
+              <input type="checkbox" id="chkboxSmellIsactive"><label for="chkboxSmellIsactive">Is active</label>
+            </p>
+            <p>
+              <button id="btnSaveSmell" class="btn btn-secondary">Save</button>
+            </p>
+          </fieldset>
+
+
+          <div id="DisplayBrowserVersion" style="display: block;"></div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-12 mt-3">
+        <button id="btnClearGame" class="btn btn-danger">Clear Game</button>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4">
+  
+        <div id="containerprivatebrowsing">
+          Gå i Safari ved at trykke på safari-ikonet i øverste eller nederste højre hjørne.<br />
+          <img src="safaricompas.svg" width="30" alt=""><br />
+          <span id="screenwidth"></span><br />
+          <span id="browsername"></span>
+        </div>
         </p>
-        <p>
-            <input id="inputSmell" type="text" name=""  placeholder="">
-        </p>
-        <p>
-            <input type="checkbox" id="chkboxSmellIsactive" ><label for="chkboxSmellIsactive">Is active</label> 
-        </p>
-        <p>
-            <button id="btnSaveSmell"  class="btn btn-secondary">Save</button>
-        </p>
-
-    </fieldset>
-
-
-    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx5xxxxx0xxx">5</a>
-    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx6xxxxx0xxx">6</a>  
-    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx7xxxxx0xxx">7</a>  
-    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx8xxxxx0xxx">8</a>  
-    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx9xxxxx0xxx">9</a>  
-    <a href="./index.html?id=xxxxxxxxxxxxxxxxxxxxx0xxxxx1xxx">10</a>  
-</div>
-<button id="btnClearGame"  class="btn btn-danger">Clear Game</button>
-
-
-<div id="DisplayBrowserVersion" style="display: block;"></div>
+        <br /><br />
+  
+        <button id="btnDisplayBrowserVersion" style="display: none;">Return Browser version</button>
+        <div></div>
+  
+  
+      </div>
+    </div>
 
 
 
 
-    
-</div>
+
+  </div> <!-- container -->
+
+
+
+
+
+
+
+
 </body>
+
 </html>

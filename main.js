@@ -163,8 +163,10 @@ scanstart.addEventListener("click",(e)=>{
 
 
       //hide result
-      containertotalscore.innerHTML="";
+      containertotalscore.innerHTML="";      
+      btnGetTotalScore.hidden=false;
       startScanner();
+      
 });
 
 scanstop.addEventListener("click",(e)=>{
@@ -413,6 +415,8 @@ scanstop.addEventListener("click",(e)=>{
         return _round.Guesses; 
       }       
 
+      
+
       return 0;
   }
 
@@ -420,7 +424,12 @@ scanstop.addEventListener("click",(e)=>{
   function getTotalScore2(){
       const fragment = document.createDocumentFragment();
       const table=document.createElement("TABLE");
+      table.classList.add("table");
+      table.classList.add("table-bordered");      
+      table.classList.add("table-sm");
+      
       const thead=document.createElement("THEAD");
+      thead.classList.add("table-dark")
       const tbody=document.createElement("TBODY");            
   
       
@@ -445,6 +454,11 @@ scanstop.addEventListener("click",(e)=>{
       let thscore=document.createElement("TH")  
       thscore.append("Point");
       trheader.appendChild(thscore);
+
+
+      let thrightuppercorner=document.createElement("TH")      
+      trheader.appendChild(thrightuppercorner);
+
       thead.appendChild(trheader);
       table.appendChild(thead);
   
@@ -480,7 +494,15 @@ scanstop.addEventListener("click",(e)=>{
           const tdscore=document.createElement("TD")  
           tdscore.append(points);
           tr.appendChild(tdscore);
-          tbody.appendChild(tr);        
+
+          //add playername as last cell in the row
+          const tdright=document.createElement("TD");
+          tdright.append(player);
+          tr.appendChild(tdright);
+
+          tbody.appendChild(tr);       
+          
+         
       });
   
       table.appendChild(tbody); 
@@ -591,7 +613,7 @@ scanstop.addEventListener("click",(e)=>{
   
   /**/
   function setNextplayer(){            
-    containerplayer.style.backgroundColor="lightgray";
+    //containerplayer.style.backgroundColor="lightgray";
 
       let playersThisSmell=getRound(id);
 
@@ -702,6 +724,7 @@ scanstop.addEventListener("click",(e)=>{
   
   btnGetTotalScore.addEventListener("click",()=>{
       getTotalScore2();
+      btnGetTotalScore.hidden=true;
   });
   
   
