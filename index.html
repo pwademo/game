@@ -22,7 +22,7 @@
 
   <script src="./generatehslcolorbyname.js" defer></script>
 
-  <script src="./main.js?ver=1" defer></script>
+  <script src="./main.js" defer></script>
   <link rel="stylesheet" href="style.css">
 
 
@@ -37,6 +37,14 @@
 <body>
 
   <div class="container-lg">
+
+    <div class="row">
+      <div class="col-md-12 ">
+        
+          <h1>SmellAndGuess</h1>
+        
+      </div>
+    </div>
     <div class="row">
       <div class="col-md-12">
         <div id="loadingMessage" hidden>🎥 Unable to access video stream (please make sure you have a webcam enabled)
@@ -55,7 +63,7 @@
     <div class="row">
       <div class="col-md-12">
         <div id="output" hidden class="mt-2">
-           <div id="outputMessage"></div> 
+          <div id="outputMessage"></div>
           <div hidden><b>Data:</b> <span id="outputData"></span></div>
         </div>
       </div>
@@ -89,8 +97,8 @@
     </div>
 
 
-    <div class="row" style="margin-top:500px">
-      <div class="col-md-12"  >
+    <div class="row" style="margin-top:1200px">
+      <div class="col-md-12">
         <!---->
         <button id="btnShowSetup" class="btn btn-secondary">Show Setup</button>
       </div>
@@ -139,17 +147,20 @@
 
           <div id="DisplayBrowserVersion" style="display: block;"></div>
 
+          <div class="row">
+            <div class="col-md-12 mt-3">
+              <button id="btnClearGame" class="btn btn-danger">Clear Game</button>
+            </div>
+          </div>
+
+
         </div>
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-12 mt-3">
-        <button id="btnClearGame" class="btn btn-danger">Clear Game</button>
-      </div>
-    </div>
 
-    <div class="row">
+
+    <!-- <div class="row">
       <div class="col-sm-4">
   
         <div id="containerprivatebrowsing">
@@ -166,7 +177,7 @@
   
   
       </div>
-    </div>
+    </div> -->
 
 
 

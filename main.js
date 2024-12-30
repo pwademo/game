@@ -184,22 +184,22 @@ scanstop.addEventListener("click",(e)=>{
 
 
 
-    var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
-    var browserName = (function (agent) {
-      switch (true) {
-          case agent.indexOf("edge") > -1: return "MS Edge";
-          case agent.indexOf("edg/") > -1: return "Edge ( chromium based)";
-          case agent.indexOf("opr") > -1 && !!window.opr: return "Opera";
-          case agent.indexOf("chrome") > -1 && !!window.chrome: return "Chrome";
-          case agent.indexOf("trident") > -1: return "MS IE";
-          case agent.indexOf("firefox") > -1: return "Mozilla Firefox";
-          case agent.indexOf("safari") > -1: return "Safari";
-          default: return "other";
-      }
-      })(window.navigator.userAgent.toLowerCase());
+    // var width = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    // var browserName = (function (agent) {
+    //   switch (true) {
+    //       case agent.indexOf("edge") > -1: return "MS Edge";
+    //       case agent.indexOf("edg/") > -1: return "Edge ( chromium based)";
+    //       case agent.indexOf("opr") > -1 && !!window.opr: return "Opera";
+    //       case agent.indexOf("chrome") > -1 && !!window.chrome: return "Chrome";
+    //       case agent.indexOf("trident") > -1: return "MS IE";
+    //       case agent.indexOf("firefox") > -1: return "Mozilla Firefox";
+    //       case agent.indexOf("safari") > -1: return "Safari";
+    //       default: return "other";
+    //   }
+    //   })(window.navigator.userAgent.toLowerCase());
     
-    document.getElementById("screenwidth").innerText=width;
-    document.getElementById("browsername").innerText=browserName;
+    // document.getElementById("screenwidth").innerText=width;
+    // document.getElementById("browsername").innerText=browserName;
 
 
    
@@ -228,7 +228,7 @@ scanstop.addEventListener("click",(e)=>{
     if(value===null){
       
 
-        document.getElementById("containerprivatebrowsing").style.display="block";
+       // document.getElementById("containerprivatebrowsing").style.display="block";
         btnClearGame.classList.add("scannermode");
       
     }   
@@ -873,11 +873,11 @@ const chkboxSmellIsactive=document.getElementById("chkboxSmellIsactive");
         }
     })
   
-  document.getElementById("btnDisplayBrowserVersion").addEventListener("click",()=>{
-      console.log(navigator);
-      var v = "Version: " + navigator.userAgent;
-      document.getElementById("DisplayBrowserVersion").innerHTML = v;
-  })
+  // document.getElementById("btnDisplayBrowserVersion").addEventListener("click",()=>{
+  //     console.log(navigator);
+  //     var v = "Version: " + navigator.userAgent;
+  //     document.getElementById("DisplayBrowserVersion").innerHTML = v;
+  // })
   
 
 
